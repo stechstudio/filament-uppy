@@ -4,6 +4,7 @@ namespace STS\FilamentUppy;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Assets\Js;
 
 class FilamentUppyPlugin implements Plugin
 {
@@ -21,6 +22,7 @@ class FilamentUppyPlugin implements Plugin
     {
         $panel
             ->assets([
+                Js::make('sts-filament-uppy', __DIR__ . '/../resources/dist/filament-uppy-component.js'),
             ]);
     }
 

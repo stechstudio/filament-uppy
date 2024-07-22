@@ -4,9 +4,16 @@
   "description": "Custon Uppy-based file uploader Filament form component.",
   "author": "David Palmer <dp@stechstudio.com>",
   "license": "",
-  "devDependencies": {
+  "scripts": {
+    "build": "esbuild resources/js/filament-uppy-component.js --outfile=resources/dist/filament-uppy-component.js --bundle"
+  },
+  "dependencies": {
+    "@transloadit/prettier-bytes": "^0.3.4",
     "@uppy/aws-s3": "^4.0.1",
     "@uppy/core": "^4.0.1",
     "@uppy/file-input": "^4.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
   }
 }
