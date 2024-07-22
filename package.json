@@ -1,0 +1,12 @@
+{
+  "name": "filament-uppy",
+  "version": "0.0.1",
+  "description": "Custon Uppy-based file uploader Filament form component.",
+  "author": "David Palmer <dp@stechstudio.com>",
+  "license": "",
+  "devDependencies": {
+    "@uppy/aws-s3": "^4.0.1",
+    "@uppy/core": "^4.0.1",
+    "@uppy/file-input": "^4.0.0"
+  }
+}
