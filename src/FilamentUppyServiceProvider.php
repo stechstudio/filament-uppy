@@ -7,7 +7,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentUppyServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'filament-phpinfo';
+    public static string $name = 'filament-uppy';
 
     public function configurePackage(Package $package): void
     {
