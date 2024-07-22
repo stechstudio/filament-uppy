@@ -22,5 +22,12 @@
             "type": "git",
             "url": "git@github.com:stechstudio/laravel-uppy-companion.git"
         }
-    ]
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "STS\\FilamentUppy\\FilamentUppyServiceProvider"
+            ]
+        }
+    }
 }
