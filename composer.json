@@ -13,5 +13,14 @@
             "email": "dp@stechstudio.com"
         }
     ],
-    "require": {}
+    "require": {
+        "filament/filament": "^3.0",
+        "stechstudio/laravel-uppy-companion": "^0.4"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:stechstudio/laravel-uppy-companion.git"
+        }
+    ]
 }
