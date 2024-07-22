@@ -1,0 +1,17 @@
+{
+    "name": "stechstudio/filament-uppy",
+    "description": "Uppy-based file uploader Filament form component.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "STS\\FilamentUppy\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "David Palmer",
+            "email": "dp@stechstudio.com"
+        }
+    ],
+    "require": {}
+}
