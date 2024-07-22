@@ -5,7 +5,7 @@ namespace STS\FilamentUppy;
 use Closure;
 use Filament\Forms\Components\Field;
 
-class FileUploader extends Field
+class UppyUploader extends Field
 {
     protected Closure|string $uploadEndpoint = '';
 
