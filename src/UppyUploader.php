@@ -5,7 +5,7 @@ namespace STS\FilamentUppy;
 use Aws\S3\S3ClientInterface;
 use Closure;
 use Filament\Forms\Components\Field;
-use STS\LaravelUppyCompanion;
+use STS\LaravelUppyCompanion\LaravelUppyCompanion;
 
 class UppyUploader extends Field
 {
