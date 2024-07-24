@@ -44,10 +44,13 @@ class UppyUploader extends Field
         return $this;
     }
 
-    // TODO: This matches the companion class' signature for this method. But we need to evaluate these closures the Filament way.
     public function configure(Closure|string $bucket, Closure|S3ClientInterface $client, ?Closure $key = null): static
     {
-        $this->getCompanion()->configure($bucket, $client, $key);
+        $this->getCompanion()->configure(
+            $this->evaluate($bucket),
+            $this->evaluate($client),
+            $key
+        );
 
         return $this;
     }
