@@ -10,7 +10,7 @@ use STS\LaravelUppyCompanion;
 class UppyUploader extends Field
 {
     // Defaults to the built-in companion instance's upload route.
-    protected Closure|string $uploadEndpoint = '/filament-uppy-upload/upload';
+    protected Closure|string $uploadEndpoint = '/filament-uppy-upload';
 
     protected Closure|string $successEndpoint = '';
 
