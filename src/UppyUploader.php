@@ -20,6 +20,14 @@ class UppyUploader extends Field
 
     protected string $view = 'filament-uppy::uppy-uploader';
 
+    /**
+     * Manually provide endpoints for the Uppy instance and for success and delete callbacks.
+     *
+     * @param Closure|string $upload The base endpoint the Uppy instance will use to sign uploads.
+     * @param Closure|string $success The endpoint to hit after a successful upload. (optional)
+     * @param Closure|string $delete The endpoint to hit after deleting a file. (optional)
+     * @return $this
+     */
     public function endpoints(Closure|string $upload = '', Closure|string $success = '', Closure|string $delete = ''): static
     {
         if (!empty($upload)) {
@@ -37,6 +45,12 @@ class UppyUploader extends Field
         return $this;
     }
 
+    /**
+     * Explicitly provide a LaravelUppyCompanion instance or a string reference to a singleton.
+     *
+     * @param Closure|LaravelUppyCompanion|string $companion
+     * @return $this
+     */
     public function companion(Closure|LaravelUppyCompanion|string $companion): static
     {
         $this->companion = $companion;
@@ -44,6 +58,15 @@ class UppyUploader extends Field
         return $this;
     }
 
+    /**
+     * Manually configure the default or provided LaravelUppyCompanion instance.
+     *
+     * @param Closure|string $bucket The S3 bucket name or a callback to resolve it.
+     * @param Closure|S3ClientInterface $client The S3 client instance or a callback to resolve it.
+     * @param Closure|null $key A callback to resolve the key for the uploaded file. (optional)
+     * @return $this
+     * @throws \Exception
+     */
     public function configure(Closure|string $bucket, Closure|S3ClientInterface $client, ?Closure $key = null): static
     {
         $this->getCompanion()->configure(
