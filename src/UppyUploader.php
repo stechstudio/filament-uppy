@@ -26,16 +26,16 @@ class UppyUploader extends Field
 
     public function getUploadEndpoint(): string
     {
-        return is_callable($this->uploadEndpoint) ? call_user_func($this->uploadEndpoint) : $this->uploadEndpoint;
+        return $this->evaluate($this->uploadEndpoint);
     }
 
     public function getSuccessEndpoint(): string
     {
-        return is_callable($this->successEndpoint) ? call_user_func($this->successEndpoint) : $this->successEndpoint;
+        return $this->evaluate($this->successEndpoint);
     }
 
     public function getDeleteEndpoint(): string
     {
-        return is_callable($this->deleteEndpoint) ? call_user_func($this->deleteEndpoint) : $this->deleteEndpoint;
+        return $this->evaluate($this->deleteEndpoint);
     }
 }
