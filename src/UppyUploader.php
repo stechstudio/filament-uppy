@@ -67,7 +67,7 @@ class UppyUploader extends Field
      * @return $this
      * @throws \Exception
      */
-    public function configure(Closure|string $bucket, Closure|S3ClientInterface $client, ?Closure $key = null): static
+    public function configureCompanion(Closure|string $bucket, Closure|S3ClientInterface $client, ?Closure $key = null): static
     {
         $this->getCompanion()->configure(
             $this->evaluate($bucket),
