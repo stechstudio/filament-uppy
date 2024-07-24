@@ -2,8 +2,10 @@
 
 namespace STS\FilamentUppy;
 
+use Illuminate\Support\Facades\App;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use STS\LaravelUppyCompanion\LaravelUppyCompanion;
 
 class FilamentUppyServiceProvider extends PackageServiceProvider
 {
@@ -13,6 +15,12 @@ class FilamentUppyServiceProvider extends PackageServiceProvider
     {
         $package
             ->name(static::$name)
-            ->hasViews();
+            ->hasViews()
+            ->hasRoute('web');
+    }
+
+    public function packageRegistered()
+    {
+        App::singleton('laravel-uppy-companion.filament-uppy', fn () => new LaravelUppyCompanion());
     }
 }

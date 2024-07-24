@@ -2,27 +2,37 @@
 
 namespace STS\FilamentUppy;
 
+use Aws\S3\S3ClientInterface;
 use Closure;
 use Filament\Forms\Components\Field;
 use STS\LaravelUppyCompanion;
 
 class UppyUploader extends Field
 {
-    protected Closure|string $uploadEndpoint = '';
+    // Defaults to the built-in companion instance's upload route.
+    protected Closure|string $uploadEndpoint = '/filament-uppy-upload/upload';
 
     protected Closure|string $successEndpoint = '';
 
     protected Closure|string $deleteEndpoint = '';
 
-    protected Closure|LaravelUppyCompanion|string|null $companion;
+    protected Closure|LaravelUppyCompanion|string $companion = 'laravel-uppy-companion.filament-uppy';
 
     protected string $view = 'filament-uppy::uppy-uploader';
 
-    public function endpoints(Closure|string $upload, Closure|string $success = '', Closure|string $delete = ''): static
+    public function endpoints(Closure|string $upload = '', Closure|string $success = '', Closure|string $delete = ''): static
     {
-        $this->uploadEndpoint = $upload;
-        $this->successEndpoint = $success;
-        $this->deleteEndpoint = $delete;
+        if (!empty($upload)) {
+            $this->uploadEndpoint = $upload;
+        }
+
+        if (!empty($success)) {
+            $this->successEndpoint = $success;
+        }
+
+        if (!empty($delete)) {
+            $this->deleteEndpoint = $delete;
+        }
 
         return $this;
     }
@@ -30,6 +40,14 @@ class UppyUploader extends Field
     public function companion(Closure|LaravelUppyCompanion|string $companion): static
     {
         $this->companion = $companion;
+
+        return $this;
+    }
+
+    // TODO: This matches the companion class' signature for this method. But we need to evaluate these closures the Filament way.
+    public function configure(Closure|string $bucket, Closure|S3ClientInterface $client, ?Closure $key = null): static
+    {
+        $this->getCompanion()->configure($bucket, $client, $key);
 
         return $this;
     }
@@ -51,11 +69,6 @@ class UppyUploader extends Field
 
     public function getCompanion(): LaravelUppyCompanion
     {
-        // If no companion was provided, resolve the default companion.
-        if ($this->companion === null) {
-            return app(LaravelUppyCompanion::class);
-        }
-
         // Resolve the companion from the provided value.
         $evaluated = $this->evaluate($this->companion);
 
