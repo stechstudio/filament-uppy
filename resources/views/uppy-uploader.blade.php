@@ -13,7 +13,7 @@
         <div
             wire:ignore
             x-data="fileUploaderComponent({
-                state: $wire.$entangle('{{ $getStatePath() }}'),
+                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
 
                 uploadEndpoint: '{{ $getUploadEndpoint() }}',
                 successEndpoint: '{{ $getSuccessEndpoint() }}',
