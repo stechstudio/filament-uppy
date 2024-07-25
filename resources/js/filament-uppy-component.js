@@ -10,6 +10,8 @@ window.fileUploaderComponent = function fileUploaderComponent({
     successEndpoint,
     errorEndpoint,
     deleteEndpoint,
+
+    uploadingMessage,
 }) {
     return {
         state,
@@ -41,6 +43,10 @@ window.fileUploaderComponent = function fileUploaderComponent({
                         size: file.size,
                         progress: 0,
                     };
+
+                    this.dispatchFormEvent('form-processing-started', {
+                        message: uploadingMessage,
+                    })
                 })
                 .on('upload-progress', (file, progress) => this.filesInProgress[file.id].progress = ((progress.bytesUploaded / progress.bytesTotal) * 100).toFixed(0))
                 .on('upload-success', (file, response) => {
@@ -51,6 +57,8 @@ window.fileUploaderComponent = function fileUploaderComponent({
                         size: file.size,
                         url: response.uploadURL,
                     };
+
+                    this.dispatchFormEvent('form-processing-finished');
 
                     if (!!successEndpoint) {
                         const key = response.uploadURL.split('/').pop();

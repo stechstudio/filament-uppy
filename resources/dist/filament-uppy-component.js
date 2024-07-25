@@ -5963,7 +5963,8 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     uploadEndpoint,
     successEndpoint,
     errorEndpoint,
-    deleteEndpoint
+    deleteEndpoint,
+    uploadingMessage
   }) {
     return {
       state,
@@ -5987,6 +5988,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
             size: file.size,
             progress: 0
           };
+          this.dispatchFormEvent("form-processing-started", {
+            message: uploadingMessage
+          });
         }).on("upload-progress", (file, progress) => this.filesInProgress[file.id].progress = (progress.bytesUploaded / progress.bytesTotal * 100).toFixed(0)).on("upload-success", (file, response) => {
           this.removeFileInProgress(file.id);
           this.state[file.id] = {
@@ -5995,6 +5999,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
             size: file.size,
             url: response.uploadURL
           };
+          this.dispatchFormEvent("form-processing-finished");
           if (!!successEndpoint) {
             const key = response.uploadURL.split("/").pop();
             const uuid = key.split(".")[0];

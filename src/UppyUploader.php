@@ -4,9 +4,12 @@ namespace STS\FilamentUppy;
 
 use Closure;
 use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Concerns;
 
 class UppyUploader extends Field
 {
+    use Concerns\HasUploadingMessage;
+
     // Defaults to the built-in companion instance's upload route.
     protected Closure|string $uploadEndpoint = '/filament-uppy-upload/sign';
 

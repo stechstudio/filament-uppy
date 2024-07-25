@@ -13,10 +13,13 @@
         <div
             wire:ignore
             x-data="fileUploaderComponent({
+                state: $wire.$entangle('{{ $getStatePath() }}'),
+
                 uploadEndpoint: '{{ $getUploadEndpoint() }}',
                 successEndpoint: '{{ $getSuccessEndpoint() }}',
                 deleteEndpoint: '{{ $getDeleteEndpoint() }}',
-                state: $wire.$entangle('{{ $getStatePath() }}')
+
+                uploadingMessage: @js($getUploadingMessage()),
             })"
             class="divide-y divide-gray-200 dark:divide-white/10"
             x-bind:class="{ 'ring-primary-500': dragDepth > 0 }"
