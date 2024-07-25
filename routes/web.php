@@ -3,6 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use STS\LaravelUppyCompanion\LaravelUppyCompanion;
 
-Route::prefix('filament-uppy-upload')->group(function () {
-    LaravelUppyCompanion::routes(app('laravel-uppy-companion.filament-uppy'));
-});
+if (config('filament-uppy.companion-routes.enabled')) {
+    Route::group([
+        'prefix' => 'filament-uppy-upload',
+        'middleware' => config('filament-uppy.companion-routes.middleware', []),
+    ],
+    function () {
+        LaravelUppyCompanion::routes(app('laravel-uppy-companion.filament-uppy'));
+    });
+}

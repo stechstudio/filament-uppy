@@ -15,6 +15,7 @@ class FilamentUppyServiceProvider extends PackageServiceProvider
     {
         $package
             ->name(static::$name)
+            ->hasConfigFile()
             ->hasViews()
             ->hasRoute('web');
     }
