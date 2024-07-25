@@ -22,6 +22,6 @@ class FilamentUppyServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        App::singleton('laravel-uppy-companion.filament-uppy', fn () => new LaravelUppyCompanion());
+        App::singleton('filament-uppy', fn () => new LaravelUppyCompanion());
     }
 }

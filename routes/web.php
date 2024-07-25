@@ -9,6 +9,6 @@ if (config('filament-uppy.companion-routes.enabled')) {
         'middleware' => config('filament-uppy.companion-routes.middleware', []),
     ],
     function () {
-        LaravelUppyCompanion::routes(app('laravel-uppy-companion.filament-uppy'));
+        LaravelUppyCompanion::routes(app('filament-uppy'));
     });
 }
