@@ -6078,6 +6078,15 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       },
       humanReadableFilesize(bytes) {
         return (0, import_prettier_bytes2.default)(bytes);
+      },
+      dispatchFormEvent: function(name, detail = {}) {
+        this.$el.closest("form")?.dispatchEvent(
+          new CustomEvent(name, {
+            composed: true,
+            cancelable: true,
+            detail
+          })
+        );
       }
     };
   };

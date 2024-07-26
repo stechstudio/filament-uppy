@@ -151,6 +151,16 @@ window.fileUploaderComponent = function fileUploaderComponent({
 
         humanReadableFilesize(bytes) {
             return prettierBytes(bytes);
-        }
+        },
+
+        dispatchFormEvent: function (name, detail = {}) {
+            this.$el.closest('form')?.dispatchEvent(
+                new CustomEvent(name, {
+                    composed: true,
+                    cancelable: true,
+                    detail,
+                }),
+            )
+        },
     }
 }
