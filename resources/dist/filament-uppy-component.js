@@ -5971,14 +5971,17 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       busy: false,
       dragDepth: 0,
       filesInProgress: {},
+      filesCompleted: {},
       uppy: new Uppy_default({ autoProceed: true, allowMultipleUploads: true }),
       init() {
-        console.log("fileUploaderComponent init");
         this.state = {};
         window.addEventListener("beforeunload", (e2) => {
           if (!this.busy) return;
           e2.preventDefault();
           e2.returnValue = "Are you sure you want to leave? Uploads in progress will be cancelled.";
+        });
+        $watch("state", (value, oldValue) => {
+          console.log("state changed", value, oldValue);
         });
         this.uppy.on("file-added", (file) => {
           this.busy = true;

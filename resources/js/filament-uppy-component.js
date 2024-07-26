@@ -21,17 +21,21 @@ window.fileUploaderComponent = function fileUploaderComponent({
         dragDepth: 0,
 
         filesInProgress: {},
+        filesCompleted: {},
 
         uppy: new Uppy({ autoProceed: true, allowMultipleUploads: true }),
 
         init() {
-            console.log('fileUploaderComponent init');
             this.state = {};
 
             window.addEventListener('beforeunload', (e) => {
                 if (!this.busy) return;
                 e.preventDefault();
                 e.returnValue = 'Are you sure you want to leave? Uploads in progress will be cancelled.';
+            });
+
+            $watch('state', (value, oldValue) => {
+                console.log('state changed', value, oldValue);
             });
 
             this.uppy
