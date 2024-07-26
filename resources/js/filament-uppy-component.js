@@ -35,7 +35,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
             });
 
             this.$watch('state', (value, oldValue) => {
-                console.log('state changed', value, oldValue);
+                console.log(['state changed', value, oldValue]);
             });
 
             this.uppy
@@ -62,6 +62,9 @@ window.fileUploaderComponent = function fileUploaderComponent({
                         url: response.uploadURL,
                     };
 
+                    console.log(['added completed file to state', file.id, this.state]);
+
+                    // TODO: This needs to wait to fire until all files are done
                     this.dispatchFormEvent('form-processing-finished');
 
                     if (!!successEndpoint) {
