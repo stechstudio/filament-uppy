@@ -5974,7 +5974,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       filesCompleted: {},
       uppy: new Uppy_default({ autoProceed: true, allowMultipleUploads: true }),
       init() {
-        this.state = {};
+        this.state = [];
         window.addEventListener("beforeunload", (e2) => {
           if (!this.busy) return;
           e2.preventDefault();
@@ -5996,14 +5996,18 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           });
         }).on("upload-progress", (file, progress) => this.filesInProgress[file.id].progress = (progress.bytesUploaded / progress.bytesTotal * 100).toFixed(0)).on("upload-success", (file, response) => {
           this.removeFileInProgress(file.id);
-          this.state[file.id] = {
-            id: file.id,
-            name: file.name,
-            size: file.size,
-            url: response.uploadURL
-          };
+          if (!this.state.find((stateFile) => stateFile.id === file.id)) {
+            this.state.push({
+              id: file.id,
+              name: file.name,
+              size: file.size,
+              url: response.uploadURL
+            });
+          }
           console.log(["added completed file to state", file.id, this.state]);
-          this.dispatchFormEvent("form-processing-finished");
+          if (this.filesInProgress.length === 0) {
+            this.dispatchFormEvent("form-processing-finished");
+          }
           if (!!successEndpoint) {
             const key = response.uploadURL.split("/").pop();
             const uuid = key.split(".")[0];
@@ -6054,18 +6058,21 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         this.recalculateBusy();
       },
       removeCompletedFile(id11) {
-        const key = this.state[id11].url.split("/").pop();
-        const uuid = key.split(".")[0];
-        delete this.state[id11];
-        if (!!deleteEndpoint) {
-          fetch(deleteEndpoint, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ uuid })
-          });
+        const fileIndex = this.state.findIndex((file) => file.id === id11);
+        if (fileIndex !== -1) {
+          const key = this.state[fileIndex].url.split("/").pop();
+          const uuid = key.split(".")[0];
+          this.state.splice(fileIndex, 1);
+          if (!!deleteEndpoint) {
+            fetch(deleteEndpoint, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify({ uuid })
+            });
+          }
         }
       },
       recalculateBusy() {

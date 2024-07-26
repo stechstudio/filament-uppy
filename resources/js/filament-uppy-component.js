@@ -26,7 +26,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
         uppy: new Uppy({ autoProceed: true, allowMultipleUploads: true }),
 
         init() {
-            this.state = {};
+            this.state = [];
 
             window.addEventListener('beforeunload', (e) => {
                 if (!this.busy) return;
@@ -55,17 +55,22 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 .on('upload-progress', (file, progress) => this.filesInProgress[file.id].progress = ((progress.bytesUploaded / progress.bytesTotal) * 100).toFixed(0))
                 .on('upload-success', (file, response) => {
                     this.removeFileInProgress(file.id);
-                    this.state[file.id] = {
-                        id: file.id,
-                        name: file.name,
-                        size: file.size,
-                        url: response.uploadURL,
-                    };
+
+                    // If state array does not contain a file with the same id, add it.
+                    if (!this.state.find((stateFile) => stateFile.id === file.id)) {
+                        this.state.push({
+                            id: file.id,
+                            name: file.name,
+                            size: file.size,
+                            url: response.uploadURL,
+                        });
+                    }
 
                     console.log(['added completed file to state', file.id, this.state]);
 
-                    // TODO: This needs to wait to fire until all files are done
-                    this.dispatchFormEvent('form-processing-finished');
+                    if (this.filesInProgress.length === 0) {
+                        this.dispatchFormEvent('form-processing-finished');
+                    }
 
                     if (!!successEndpoint) {
                         const key = response.uploadURL.split('/').pop();
@@ -124,20 +129,23 @@ window.fileUploaderComponent = function fileUploaderComponent({
         },
 
         removeCompletedFile(id) {
-            const key = this.state[id].url.split('/').pop();
-            const uuid = key.split('.')[0];
+            const fileIndex = this.state.findIndex((file) => file.id === id);
+            if (fileIndex !== -1) {
+                const key = this.state[fileIndex].url.split('/').pop();
+                const uuid = key.split('.')[0];
 
-            delete this.state[id];
+                this.state.splice(fileIndex, 1);
 
-            if (!!deleteEndpoint) {
-                fetch(deleteEndpoint, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({uuid}),
-                });
+                if (!!deleteEndpoint) {
+                    fetch(deleteEndpoint, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({ uuid }),
+                    });
+                }
             }
         },
 
