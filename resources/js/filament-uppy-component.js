@@ -34,7 +34,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 e.returnValue = 'Are you sure you want to leave? Uploads in progress will be cancelled.';
             });
 
-            $watch('state', (value, oldValue) => {
+            this.$watch('state', (value, oldValue) => {
                 console.log('state changed', value, oldValue);
             });
 

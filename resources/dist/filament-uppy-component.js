@@ -5980,7 +5980,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           e2.preventDefault();
           e2.returnValue = "Are you sure you want to leave? Uploads in progress will be cancelled.";
         });
-        $watch("state", (value, oldValue) => {
+        this.$watch("state", (value, oldValue) => {
           console.log("state changed", value, oldValue);
         });
         this.uppy.on("file-added", (file) => {
