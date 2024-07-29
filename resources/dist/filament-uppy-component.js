@@ -6006,7 +6006,10 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           }
           console.log(["added completed file to state", file.id, this.state]);
           if (this.filesInProgress.length === 0) {
+            console.log("no more files in progress");
             this.dispatchFormEvent("form-processing-finished");
+          } else {
+            console.log(this.filesInProgress.length + " files still in progress");
           }
           if (!!successEndpoint) {
             const key = response.uploadURL.split("/").pop();
