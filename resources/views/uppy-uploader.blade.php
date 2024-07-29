@@ -36,7 +36,10 @@
                 dragDepth = 0;
             })"
         >
-            <table class="w-full table-auto divide-y divide-gray-200 dark:divide-white/5">
+            <table
+                x-show="state.length + Object.keys(filesInProgress).length > 0"
+                class="w-full table-auto divide-y divide-gray-200 dark:divide-white/5"
+            >
                 <thead>
                     <tr>
                         <th
@@ -105,6 +108,26 @@
                     </template>
                 </tbody>
             </table>
+
+            <div
+                x-show="state.length + Object.keys(filesInProgress).length === 0"
+                class="flex justify-center px-3 py-2"
+            >
+                @if(!empty($getEmptyIcon()))
+                    <x-filament::icon
+                            alias="panels::topbar.global-search.field"
+                            :icon="$getEmptyIcon()"
+                            wire:target="search"
+                            class="h-5 w-5 text-gray-500 dark:text-gray-400"
+                    />
+                @endif
+
+                @if(!empty($getEmptyMessage()))
+                    <div class="font-semibold text-sm text-gray-700 dark:text-gray-200">
+                        {{ $getEmptyMessage() }}
+                    </div>
+                @endif
+            </div>
 
             <div class="flex justify-center px-3 py-2">
                 <button
