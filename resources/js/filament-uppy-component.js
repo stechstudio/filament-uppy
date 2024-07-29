@@ -33,10 +33,6 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 e.returnValue = 'Are you sure you want to leave? Uploads in progress will be cancelled.';
             });
 
-            this.$watch('state', (value, oldValue) => {
-                console.log(['state changed', value, oldValue]);
-            });
-
             this.uppy
                 .on('file-added', (file) => {
                     this.busy = true;
@@ -65,14 +61,8 @@ window.fileUploaderComponent = function fileUploaderComponent({
                         });
                     }
 
-                    console.log(['added completed file to state', file.id, this.state]);
-
-                    const filesInProgressCount = Object.keys(this.filesInProgress).length;
-                    if (filesInProgressCount === 0) {
-                        console.log('no more files in progress');
+                    if (Object.keys(this.filesInProgress).length === 0) {
                         this.dispatchFormEvent('form-processing-finished');
-                    } else {
-                        console.log(filesInProgressCount + ' files still in progress');
                     }
 
                     if (!!successEndpoint) {
