@@ -5971,7 +5971,6 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       busy: false,
       dragDepth: 0,
       filesInProgress: {},
-      filesCompleted: {},
       uppy: new Uppy_default({ autoProceed: true, allowMultipleUploads: true }),
       init() {
         this.state = [];
@@ -6005,11 +6004,12 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
             });
           }
           console.log(["added completed file to state", file.id, this.state]);
-          if (this.filesInProgress.length === 0) {
+          const filesInProgressCount = Object.keys(this.filesInProgress).length;
+          if (filesInProgressCount === 0) {
             console.log("no more files in progress");
             this.dispatchFormEvent("form-processing-finished");
           } else {
-            console.log(this.filesInProgress.length + " files still in progress");
+            console.log(filesInProgressCount + " files still in progress");
           }
           if (!!successEndpoint) {
             const key = response.uploadURL.split("/").pop();

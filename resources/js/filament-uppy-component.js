@@ -21,7 +21,6 @@ window.fileUploaderComponent = function fileUploaderComponent({
         dragDepth: 0,
 
         filesInProgress: {},
-        filesCompleted: {},
 
         uppy: new Uppy({ autoProceed: true, allowMultipleUploads: true }),
 
@@ -68,11 +67,12 @@ window.fileUploaderComponent = function fileUploaderComponent({
 
                     console.log(['added completed file to state', file.id, this.state]);
 
-                    if (this.filesInProgress.length === 0) {
+                    const filesInProgressCount = Object.keys(this.filesInProgress).length;
+                    if (filesInProgressCount === 0) {
                         console.log('no more files in progress');
                         this.dispatchFormEvent('form-processing-finished');
                     } else {
-                        console.log(this.filesInProgress.length + ' files still in progress');
+                        console.log(filesInProgressCount + ' files still in progress');
                     }
 
                     if (!!successEndpoint) {
