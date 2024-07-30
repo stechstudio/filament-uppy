@@ -50,6 +50,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 .on('upload-progress', (file, progress) => this.filesInProgress[file.id].progress = ((progress.bytesUploaded / progress.bytesTotal) * 100).toFixed(0))
                 .on('upload-success', (file, response) => {
                     this.removeFileInProgress(file.id);
+                    this.toggleFormProcessingState();
 
                     // If state array does not contain a file with the same id, add it.
                     if (!this.state.find((stateFile) => stateFile.id === file.id)) {
@@ -59,10 +60,6 @@ window.fileUploaderComponent = function fileUploaderComponent({
                             size: file.size,
                             url: response.uploadURL,
                         });
-                    }
-
-                    if (Object.keys(this.filesInProgress).length === 0) {
-                        this.dispatchFormEvent('form-processing-finished');
                     }
 
                     if (!!successEndpoint) {
@@ -83,6 +80,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 .on('upload-error', (file, error, response) => {
                     this.filesInProgress[file.id].error = true;
                     this.busy = true;
+                    this.toggleFormProcessingState();
 
                     if (!!errorEndpoint) {
                         fetch(errorEndpoint, {
@@ -155,6 +153,23 @@ window.fileUploaderComponent = function fileUploaderComponent({
 
         humanReadableFilesize(bytes) {
             return prettierBytes(bytes);
+        },
+
+        toggleFormProcessingState() {
+            let uploadsInProgress = false;
+            for (const file of this.uppy.getFiles()) {
+                if (file.progress.bytesUploaded < file.progress.bytesTotal) {
+                    uploadsInProgress = true;
+                }
+            }
+
+            if (uploadsInProgress) {
+                this.dispatchFormEvent('form-processing-started', {
+                    message: this.uploadingMessage,
+                });
+            } else {
+                this.dispatchFormEvent('form-processing-finished');
+            }
         },
 
         dispatchFormEvent: function (name, detail = {}) {

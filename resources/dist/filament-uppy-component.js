@@ -5992,6 +5992,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           });
         }).on("upload-progress", (file, progress) => this.filesInProgress[file.id].progress = (progress.bytesUploaded / progress.bytesTotal * 100).toFixed(0)).on("upload-success", (file, response) => {
           this.removeFileInProgress(file.id);
+          this.toggleFormProcessingState();
           if (!this.state.find((stateFile) => stateFile.id === file.id)) {
             this.state.push({
               id: file.id,
@@ -5999,9 +6000,6 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
               size: file.size,
               url: response.uploadURL
             });
-          }
-          if (Object.keys(this.filesInProgress).length === 0) {
-            this.dispatchFormEvent("form-processing-finished");
           }
           if (!!successEndpoint) {
             const key = response.uploadURL.split("/").pop();
@@ -6019,6 +6017,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         }).on("upload-error", (file, error, response) => {
           this.filesInProgress[file.id].error = true;
           this.busy = true;
+          this.toggleFormProcessingState();
           if (!!errorEndpoint) {
             fetch(errorEndpoint, {
               method: "POST",
@@ -6081,6 +6080,21 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       },
       humanReadableFilesize(bytes) {
         return (0, import_prettier_bytes2.default)(bytes);
+      },
+      toggleFormProcessingState() {
+        let uploadsInProgress = false;
+        for (const file of this.uppy.getFiles()) {
+          if (file.progress.bytesUploaded < file.progress.bytesTotal) {
+            uploadsInProgress = true;
+          }
+        }
+        if (uploadsInProgress) {
+          this.dispatchFormEvent("form-processing-started", {
+            message: this.uploadingMessage
+          });
+        } else {
+          this.dispatchFormEvent("form-processing-finished");
+        }
       },
       dispatchFormEvent: function(name, detail = {}) {
         this.$el.closest("form")?.dispatchEvent(
