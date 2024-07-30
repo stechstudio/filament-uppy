@@ -21,8 +21,11 @@
 
                 uploadingMessage: @js($getUploadingMessage()),
             })"
-            class="divide-y divide-gray-200 dark:divide-white/10"
-            x-bind:class="{ 'ring-primary-500': dragDepth > 0 }"
+
+            x-bind:class="{
+                'ring-primary-500': dragDepth > 0,
+                'divide-y divide-gray-200 dark:divide-white/10': state.length + Object.keys(filesInProgress).length > 0,
+            }"
 
             x-on:dragenter.prevent.stop="dragDepth++"
             x-on:dragleave.prevent.stop="dragDepth--"
@@ -111,15 +114,17 @@
 
             <div
                 x-show="state.length + Object.keys(filesInProgress).length === 0"
-                class="flex justify-center px-3 py-2"
+                x-on:click="$refs.fileInput.click()"
+                class="flex justify-center px-3 py-2 cursor-pointer"
             >
                 @if(!empty($getEmptyIcon()))
-                    <x-filament::icon
-                            alias="panels::topbar.global-search.field"
+                    <div class="w-full text-center">
+                        <x-filament::icon
                             :icon="$getEmptyIcon()"
                             wire:target="search"
-                            class="h-5 w-5 text-gray-500 dark:text-gray-400"
-                    />
+                            class="h-40 text-gray-500 dark:text-gray-400"
+                        />
+                    </div>
                 @endif
 
                 @if(!empty($getEmptyMessage()))
@@ -129,7 +134,10 @@
                 @endif
             </div>
 
-            <div class="flex justify-center px-3 py-2">
+            <div
+                x-show="state.length + Object.keys(filesInProgress).length > 0"
+                class="flex justify-center px-3 py-2"
+            >
                 <button
                     x-on:click="$refs.fileInput.click()"
                     class="fi-link group/link relative inline-flex items-center justify-center outline-none fi-size-md fi-link-size-md gap-1.5  fi-color-gray fi-ac-action fi-ac-link-action"
