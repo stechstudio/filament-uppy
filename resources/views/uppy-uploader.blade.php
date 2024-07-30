@@ -115,14 +115,14 @@
             <div
                 x-show="state.length + Object.keys(filesInProgress).length === 0"
                 x-on:click="$refs.fileInput.click()"
-                class="flex justify-center px-3 py-2 cursor-pointer"
+                class="align-middle cursor-pointer flex flex-col items-center px-3 py-2"
             >
                 @if(!empty($getEmptyIcon()))
-                    <div class="w-full text-center">
+                    <div>
                         <x-filament::icon
                             :icon="$getEmptyIcon()"
                             wire:target="search"
-                            class="h-40 text-gray-500 dark:text-gray-400"
+                            class="h-32 text-gray-500 dark:text-gray-400"
                         />
                     </div>
                 @endif
