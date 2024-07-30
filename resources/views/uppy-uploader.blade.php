@@ -13,13 +13,19 @@
         <div
             wire:ignore
             x-data="fileUploaderComponent({
+                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
+
                 uploadEndpoint: '{{ $getUploadEndpoint() }}',
                 successEndpoint: '{{ $getSuccessEndpoint() }}',
                 deleteEndpoint: '{{ $getDeleteEndpoint() }}',
-                state: $wire.$entangle('{{ $getStatePath() }}')
+
+                uploadingMessage: @js($getUploadingMessage()),
             })"
-            class="divide-y divide-gray-200 dark:divide-white/10"
-            x-bind:class="{ 'ring-primary-500': dragDepth > 0 }"
+
+            x-bind:class="{
+                'ring-primary-500': dragDepth > 0,
+                'divide-y divide-gray-200 dark:divide-white/10': state.length + Object.keys(filesInProgress).length > 0,
+            }"
 
             x-on:dragenter.prevent.stop="dragDepth++"
             x-on:dragleave.prevent.stop="dragDepth--"
@@ -33,7 +39,10 @@
                 dragDepth = 0;
             })"
         >
-            <table class="w-full table-auto divide-y divide-gray-200 dark:divide-white/5">
+            <table
+                x-show="state.length + Object.keys(filesInProgress).length > 0"
+                class="w-full table-auto divide-y divide-gray-200 dark:divide-white/5"
+            >
                 <thead>
                     <tr>
                         <th
@@ -65,7 +74,14 @@
                             </td>
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <span x-text="humanReadableFilesize(file.size)"></span>
+                                <span
+                                    x-show="!file.error"
+                                    x-text="humanReadableFilesize(file.size)"
+                                ></span>
+                                <span
+                                    x-show="!!file.error"
+                                    class="text-red-500"
+                                >Error</span>
                             </td>
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
@@ -103,7 +119,32 @@
                 </tbody>
             </table>
 
-            <div class="flex justify-center px-3 py-2">
+            <div
+                x-show="state.length + Object.keys(filesInProgress).length === 0"
+                x-on:click="$refs.fileInput.click()"
+                class="align-middle cursor-pointer flex flex-col items-center px-3 py-2"
+            >
+                @if(!empty($getEmptyIcon()))
+                    <div>
+                        <x-filament::icon
+                            :icon="$getEmptyIcon()"
+                            wire:target="search"
+                            class="h-32 text-gray-500 dark:text-gray-400"
+                        />
+                    </div>
+                @endif
+
+                @if(!empty($getEmptyMessage()))
+                    <div class="font-semibold text-sm text-gray-700 dark:text-gray-200">
+                        {{ $getEmptyMessage() }}
+                    </div>
+                @endif
+            </div>
+
+            <div
+                x-show="state.length + Object.keys(filesInProgress).length > 0"
+                class="flex justify-center px-3 py-2"
+            >
                 <button
                     x-on:click="$refs.fileInput.click()"
                     class="fi-link group/link relative inline-flex items-center justify-center outline-none fi-size-md fi-link-size-md gap-1.5  fi-color-gray fi-ac-action fi-ac-link-action"

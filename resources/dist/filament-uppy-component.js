@@ -5963,7 +5963,8 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     uploadEndpoint,
     successEndpoint,
     errorEndpoint,
-    deleteEndpoint
+    deleteEndpoint,
+    uploadingMessage
   }) {
     return {
       state,
@@ -5972,8 +5973,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       filesInProgress: {},
       uppy: new Uppy_default({ autoProceed: true, allowMultipleUploads: true }),
       init() {
-        console.log("fileUploaderComponent init");
-        this.state = {};
+        this.state = [];
         window.addEventListener("beforeunload", (e2) => {
           if (!this.busy) return;
           e2.preventDefault();
@@ -5987,14 +5987,20 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
             size: file.size,
             progress: 0
           };
+          this.dispatchFormEvent("form-processing-started", {
+            message: uploadingMessage
+          });
         }).on("upload-progress", (file, progress) => this.filesInProgress[file.id].progress = (progress.bytesUploaded / progress.bytesTotal * 100).toFixed(0)).on("upload-success", (file, response) => {
           this.removeFileInProgress(file.id);
-          this.state[file.id] = {
-            id: file.id,
-            name: file.name,
-            size: file.size,
-            url: response.uploadURL
-          };
+          this.toggleFormProcessingState();
+          if (!this.state.find((stateFile) => stateFile.id === file.id)) {
+            this.state.push({
+              id: file.id,
+              name: file.name,
+              size: file.size,
+              url: response.uploadURL
+            });
+          }
           if (!!successEndpoint) {
             const key = response.uploadURL.split("/").pop();
             const uuid = key.split(".")[0];
@@ -6011,6 +6017,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         }).on("upload-error", (file, error, response) => {
           this.filesInProgress[file.id].error = true;
           this.busy = true;
+          this.toggleFormProcessingState();
           if (!!errorEndpoint) {
             fetch(errorEndpoint, {
               method: "POST",
@@ -6045,18 +6052,21 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         this.recalculateBusy();
       },
       removeCompletedFile(id11) {
-        const key = this.state[id11].url.split("/").pop();
-        const uuid = key.split(".")[0];
-        delete this.state[id11];
-        if (!!deleteEndpoint) {
-          fetch(deleteEndpoint, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ uuid })
-          });
+        const fileIndex = this.state.findIndex((file) => file.id === id11);
+        if (fileIndex !== -1) {
+          const key = this.state[fileIndex].url.split("/").pop();
+          const uuid = key.split(".")[0];
+          this.state.splice(fileIndex, 1);
+          if (!!deleteEndpoint) {
+            fetch(deleteEndpoint, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify({ uuid })
+            });
+          }
         }
       },
       recalculateBusy() {
@@ -6070,6 +6080,30 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       },
       humanReadableFilesize(bytes) {
         return (0, import_prettier_bytes2.default)(bytes);
+      },
+      toggleFormProcessingState() {
+        let uploadsInProgress = false;
+        for (const file of this.uppy.getFiles()) {
+          if (file.progress.bytesUploaded < file.progress.bytesTotal) {
+            uploadsInProgress = true;
+          }
+        }
+        if (uploadsInProgress) {
+          this.dispatchFormEvent("form-processing-started", {
+            message: this.uploadingMessage
+          });
+        } else {
+          this.dispatchFormEvent("form-processing-finished");
+        }
+      },
+      dispatchFormEvent: function(name, detail = {}) {
+        this.$el.closest("form")?.dispatchEvent(
+          new CustomEvent(name, {
+            composed: true,
+            cancelable: true,
+            detail
+          })
+        );
       }
     };
   };
