@@ -11,7 +11,7 @@ class UppyUploader extends Field
     use Concerns\HasUploadingMessage;
 
     // Defaults to the built-in companion instance's upload route.
-    protected Closure|string $uploadEndpoint = '/filament-uppy-upload/sign';
+    protected Closure|string $uploadEndpoint = '';
 
     protected Closure|string $successEndpoint = '';
 

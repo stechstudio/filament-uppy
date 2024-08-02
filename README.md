@@ -9,35 +9,29 @@ in your Laravel app with, at the very least, the bucket name and an S3 client.
 
 ```php
 use Aws\S3\S3Client;
+use STS\LaravelUppyCompanion\LaravelUppyCompanion;
 
-app('filament-uppy')->configure(
-    'your-bucket-name',
+app(LaravelUppyCompanion::class)->configure(
+    'my-bucket-name',
     new S3Client(config('aws'))
 );
 ```
 
-Use in a form schema:
+Register the companion's signing routes:
 ```php
-use STS\FilamentUppy\UppyUploader;
+use STS\LaravelUppyCompanion\LaravelUppyCompanion;
 
-UppyUploader::make('files'),
+Route::group(['prefix' => 'my/upload'], function () {
+    LaravelUppyCompanion::routes();
+});
 ```
 
-This package will register the necessary routes for the Uppy Companion, and will automatically sign the uploads with the
-configured S3 client. If you need to disable that behavior and provide your own endpoints, first publish the config file:
-
-```bash
-php artisan vendor:publish --tag=filament-uppy-config
-```
-
-Then set `companion-routes` to `false` in the published `filament-uppy.php` config file and provide the
-new upload signature endpoint to the component:
-
+Use in a Filament form schema:
 ```php
 use STS\FilamentUppy\UppyUploader;
 
 UppyUploader::make('files')
-    ->endpoints(upload: '/upload/sign'),
+    ->endpoints(upload: '/my/upload/sign'),
 ```
 
 The `->endpoints()` method also accepts optional `success` and `delete` arguments for endpoints that the uploader
