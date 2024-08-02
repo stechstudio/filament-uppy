@@ -3,7 +3,7 @@
     :field="$field"
 >
     <x-filament::input.wrapper
-        :disabled="false" {{-- $isDisabled... but that was truthy? --}}
+        :disabled="$isDisabled()"
         :valid="!$errors->has($getStatePath())"
         :attributes="
             \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
