@@ -4,7 +4,7 @@
 >
     <x-filament::input.wrapper
         :disabled="false" {{-- $isDisabled... but that was truthy? --}}
-        :valid="! $errors->has($statePath)"
+        :valid="!$errors->has($getStatePath())"
         :attributes="
             \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
                 ->class(['sts-fi-file-uploader'])
