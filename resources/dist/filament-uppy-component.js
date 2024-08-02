@@ -5964,14 +5964,19 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     successEndpoint,
     errorEndpoint,
     deleteEndpoint,
-    uploadingMessage
+    uploadingMessage,
+    restrictions
   }) {
     return {
       state,
       busy: false,
       dragDepth: 0,
       filesInProgress: {},
-      uppy: new Uppy_default({ autoProceed: true, allowMultipleUploads: true }),
+      uppy: new Uppy_default({
+        autoProceed: true,
+        allowMultipleUploads: true,
+        restrictions
+      }),
       init() {
         this.state = [];
         window.addEventListener("beforeunload", (e2) => {

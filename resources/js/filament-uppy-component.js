@@ -12,6 +12,8 @@ window.fileUploaderComponent = function fileUploaderComponent({
     deleteEndpoint,
 
     uploadingMessage,
+
+    restrictions,
 }) {
     return {
         state,
@@ -22,7 +24,11 @@ window.fileUploaderComponent = function fileUploaderComponent({
 
         filesInProgress: {},
 
-        uppy: new Uppy({ autoProceed: true, allowMultipleUploads: true }),
+        uppy: new Uppy({
+            autoProceed: true,
+            allowMultipleUploads: true,
+            restrictions,
+        }),
 
         init() {
             this.state = [];

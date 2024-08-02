@@ -17,6 +17,8 @@ class UppyUploader extends Field
 
     protected Closure|string $deleteEndpoint = '';
 
+    protected Closure|array $restrictions = [];
+
     protected Closure|string $emptyIcon = 'heroicon-o-cloud-arrow-up';
 
     protected Closure|string $emptyMessage = 'Drop files here or click to upload.';
@@ -62,6 +64,32 @@ class UppyUploader extends Field
         return $this;
     }
 
+    /**
+     * The array of restrictions to apply to the Uppy instance. Expects an associative array
+     * with the keys being the restriction name and the value being the restriction value to be passed
+     * to the Uppy instance.
+     *
+     * Allowed keys are:
+     * maxFileSize - number - maximum file size in bytes for each individual file
+     * minFileSize - number - minimum file size in bytes for each individual file
+     * maxTotalFileSize - number - maximum file size in bytes for all the files that can be selected for upload
+     * maxNumberOfFiles - number - total number of files that can be selected
+     * minNumberOfFiles - number - minimum number of files that must be selected before the upload
+     * allowedFileTypes - array of strings - wildcards image/*, or exact mime types image/jpeg, or file extensions .jpg: ['image/*', '.jpg', '.jpeg', '.png', '.gif']
+     * requiredMetaFields - array of strings - make keys from the meta object in every file required before uploading
+     *
+     * Source: https://uppy.io/docs/uppy/#restrictions
+     *
+     * @param Closure|array $restrictions
+     * @return $this
+     */
+    public function restrictions(Closure|array $restrictions): static
+    {
+        $this->restrictions = $restrictions;
+
+        return $this;
+    }
+
     public function getUploadEndpoint(): string
     {
         return $this->evaluate($this->uploadEndpoint);
@@ -85,5 +113,10 @@ class UppyUploader extends Field
     public function getEmptyMessage(): string
     {
         return $this->evaluate($this->emptyMessage);
+    }
+
+    public function getRestrictions(): array
+    {
+        return $this->evaluate($this->restrictions);
     }
 }

@@ -20,6 +20,8 @@
                 deleteEndpoint: '{{ $getDeleteEndpoint() }}',
 
                 uploadingMessage: @js($getUploadingMessage()),
+
+                restrictions: @json($getRestrictions()),
             })"
 
             x-bind:class="{
