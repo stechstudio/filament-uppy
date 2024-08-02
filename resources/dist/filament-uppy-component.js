@@ -6091,7 +6091,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       toggleFormProcessingState() {
         let uploadsInProgress = false;
         for (const file of this.uppy.getFiles()) {
-          if (file.progress.bytesUploaded < file.progress.bytesTotal) {
+          if (!file.error && file.progress.bytesUploaded < file.progress.bytesTotal) {
             uploadsInProgress = true;
           }
         }
