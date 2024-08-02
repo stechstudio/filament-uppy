@@ -21,7 +21,7 @@
 
                 uploadingMessage: @js($getUploadingMessage()),
 
-                restrictions: @json($getRestrictions()),
+                restrictions: @js($getRestrictions()),
             })"
 
             x-bind:class="{
