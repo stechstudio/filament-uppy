@@ -119,24 +119,21 @@ window.fileUploaderComponent = function fileUploaderComponent({
             this.recalculateBusy();
         },
 
-        removeCompletedFile(id) {
-            const fileIndex = this.state.findIndex((file) => file.id === id);
-            if (fileIndex !== -1) {
-                const key = this.state[fileIndex].url.split('/').pop();
-                const uuid = key.split('.')[0];
+        removeCompletedFile(index) {
+            const key = this.state[index].url.split('/').pop();
+            const uuid = key.split('.')[0];
 
-                this.state.splice(fileIndex, 1);
+            this.state.splice(index, 1);
 
-                if (!!deleteEndpoint) {
-                    fetch(deleteEndpoint, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        },
-                        body: JSON.stringify({ uuid }),
-                    });
-                }
+            if (!!deleteEndpoint) {
+                fetch(deleteEndpoint, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ uuid }),
+                });
             }
         },
 
