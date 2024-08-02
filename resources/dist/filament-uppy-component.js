@@ -6052,18 +6052,23 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         this.recalculateBusy();
       },
       removeCompletedFile(index) {
-        const key = this.state[index].url.split("/").pop();
-        const uuid = key.split(".")[0];
-        this.state.splice(index, 1);
-        if (!!deleteEndpoint) {
-          fetch(deleteEndpoint, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ uuid })
-          });
+        const file = this.state[index];
+        if (!!file) {
+          this.state.splice(index, 1);
+          if (!!deleteEndpoint) {
+            const key = file.url.split("/").pop();
+            const uuid = key.split(".")[0];
+            const name = file.name;
+            const url = file.url;
+            fetch(deleteEndpoint, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify({ name, url, uuid })
+            });
+          }
         }
       },
       recalculateBusy() {
