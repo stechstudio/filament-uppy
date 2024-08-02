@@ -50,6 +50,13 @@ class UppyUploader extends Field
         return $this;
     }
 
+    /**
+     * The icon to display when there are no files uploaded.
+     * Defaults to 'heroicon-o-cloud-arrow-up'.
+     *
+     * @param Closure|string $icon
+     * @return $this
+     */
     public function emptyIcon(Closure|string $icon): static
     {
         $this->emptyIcon = $icon;
@@ -57,6 +64,13 @@ class UppyUploader extends Field
         return $this;
     }
 
+    /**
+     * The message to display when there are no files uploaded.
+     * Defaults to 'Drop files here or click to upload.'.
+     *
+     * @param Closure|string $message
+     * @return $this
+     */
     public function emptyMessage(Closure|string $message): static
     {
         $this->emptyMessage = $message;
