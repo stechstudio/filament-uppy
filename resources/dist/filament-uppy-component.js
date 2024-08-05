@@ -5978,7 +5978,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         restrictions
       }),
       init() {
-        this.state = [];
+        if (!Array.isArray(this.state)) {
+          this.state = [];
+        }
         window.addEventListener("beforeunload", (e2) => {
           if (!this.busy) return;
           e2.preventDefault();

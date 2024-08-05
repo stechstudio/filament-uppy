@@ -31,7 +31,9 @@ window.fileUploaderComponent = function fileUploaderComponent({
         }),
 
         init() {
-            this.state = [];
+            if (!Array.isArray(this.state)) {
+                this.state = [];
+            }
 
             window.addEventListener('beforeunload', (e) => {
                 if (!this.busy) return;
