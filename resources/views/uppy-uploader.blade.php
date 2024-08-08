@@ -56,10 +56,15 @@
 
                         <th
                             scope="col"
-                            class="w-1/2 px-3 py-2 text-start text-sm font-medium text-gray-700 dark:text-gray-200"
+                            class="w-1/12 px-3 py-2 text-start text-sm font-medium text-gray-700 dark:text-gray-200"
                         >
                             Size
                         </th>
+
+                        <th
+                            scope="col"
+                            class="w-5/12"
+                        ></th>
 
                         <th
                             scope="col"
@@ -75,7 +80,10 @@
                                 <span x-text="file.name"></span>
                             </td>
 
-                            <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
+                            <td
+                                class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200"
+                                colspan="2"
+                            >
                                 <span
                                     x-show="!file.error"
                                     x-text="humanReadableFilesize(file.size)"
@@ -104,17 +112,20 @@
                             </td>
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <div class="flex gap-2 items-center">
-                                    <div class="flex-shrink-0">
-                                        <span x-text="humanReadableFilesize(file.size)"></span>
-                                        <span x-text="'(' + file.progress + '%)'"></span>
-                                    </div>
+                                <span x-text="humanReadableFilesize(file.size)"></span>
+                            </td>
 
+                            <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
+                                <div class="flex gap-2 items-center">
                                     <div class="bg-gray-100 rounded shadow-sm flex-grow" style="height: 6px">
                                         <div
                                             class="bg-primary-500 h-full rounded-md transition-all"
                                             x-bind:style="'width: ' + file.progress + '%'"
                                         ></div>
+                                    </div>
+
+                                    <div class="flex-shrink-0 tabular-nums">
+                                        <span x-text="file.progress + '%'"></span>
                                     </div>
                                 </div>
                             </td>
