@@ -117,7 +117,7 @@
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
                                 <div class="flex gap-2 items-center">
-                                    <div class="bg-gray-100 rounded shadow-sm flex-grow" style="height: 6px">
+                                    <div class="dark:bg-gray-900 bg-gray-100 rounded shadow-sm flex-grow" style="height: 6px">
                                         <div
                                             class="bg-primary-500 h-full rounded-md transition-all"
                                             x-bind:style="'width: ' + file.progress + '%'"
