@@ -120,6 +120,7 @@
                                     <div class="dark:bg-gray-900 bg-gray-100 rounded shadow-sm flex-grow" style="height: 6px">
                                         <div
                                             class="bg-primary-500 h-full rounded-md transition-all"
+                                            x-bind:class="{'bg-primary-500' : !file.error, 'bg-red-500' : !!file.error}"
                                             x-bind:style="'width: ' + file.progress + '%'"
                                         ></div>
                                     </div>
