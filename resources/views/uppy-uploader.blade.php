@@ -104,8 +104,19 @@
                             </td>
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <span x-text="humanReadableFilesize(file.size)"></span>
-                                <span x-text="'(' + file.progress + '%)'"></span>
+                                <div class="flex gap-2 items-center">
+                                    <div class="flex-shrink-0">
+                                        <span x-text="humanReadableFilesize(file.size)"></span>
+                                        <span x-text="'(' + file.progress + '%)'"></span>
+                                    </div>
+
+                                    <div class="bg-gray-100 rounded shadow-sm flex-grow" style="height: 6px">
+                                        <div
+                                            class="bg-primary-500 h-full rounded-md transition-all"
+                                            x-bind:style="'width: ' + file.progress + '%'"
+                                        ></div>
+                                    </div>
+                                </div>
                             </td>
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
