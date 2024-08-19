@@ -6042,7 +6042,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         });
         this.uppy.use(AwsS3Multipart, {
           endpoint: uploadEndpoint,
-          getChunkSize: (file) => 100 * 1024 * 1024
+          getChunkSize: (file) => 100 * 1024 * 1024,
+          // 100MB
+          shouldUseMultipart: (file) => file.size > 100 * 1024 * 1024
           // 100MB
         });
         this.uppy.use(FileInput, {
