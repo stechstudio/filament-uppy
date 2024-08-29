@@ -178,7 +178,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
 
             if (uploadsInProgress) {
                 this.dispatchFormEvent('form-processing-started', {
-                    message: this.uploadingMessage,
+                    message: uploadingMessage,
                 });
             } else {
                 this.dispatchFormEvent('form-processing-finished');
