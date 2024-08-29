@@ -173,6 +173,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 // If there is a file that is not an error and is not fully uploaded, we consider the form to be processing.
                 if (!file.error && file.progress.bytesUploaded < file.progress.bytesTotal) {
                     uploadsInProgress = true;
+                    break;
                 }
             }
 
