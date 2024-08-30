@@ -17,6 +17,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
 }) {
     return {
         state,
+        internalState: [],
 
         busy: false,
 
@@ -34,6 +35,8 @@ window.fileUploaderComponent = function fileUploaderComponent({
             if (!Array.isArray(this.state)) {
                 this.state = [];
             }
+
+            this.internalState = this.state;
 
             window.addEventListener('beforeunload', (e) => {
                 if (!this.busy) return;
@@ -61,13 +64,14 @@ window.fileUploaderComponent = function fileUploaderComponent({
                     this.toggleFormProcessingState();
 
                     // If state array does not contain a file with the same id, add it.
-                    if (!this.state.find((stateFile) => stateFile.id === file.id)) {
-                        this.state.push({
+                    if (!this.internalState.find((stateFile) => stateFile.id === file.id)) {
+                        this.internalState.push({
                             id: file.id,
                             name: file.name,
                             size: file.size,
                             url: response.uploadURL,
                         });
+                        this.state = this.internalState;
                     }
 
                     if (!!successEndpoint) {
@@ -123,33 +127,37 @@ window.fileUploaderComponent = function fileUploaderComponent({
         },
 
         removeFileInProgress(id) {
-            this.uppy.removeFile(id);
-            delete this.filesInProgress[id];
-            this.recalculateBusy();
+            this.withFormProcessingAndBusy(() => {
+                this.uppy.removeFile(id);
+                delete this.filesInProgress[id];
+            });
         },
 
         removeCompletedFile(index) {
-            const file = this.state[index];
+            this.withFormProcessingAndBusy(() => {
+                const file = this.internalState[index];
 
-            if (!!file) {
-                this.state.splice(index, 1);
+                if (!!file) {
+                    this.internalState.splice(index, 1);
+                    this.state = this.internalState;
 
-                if (!!deleteEndpoint) {
-                    const key = file.url.split('/').pop();
-                    const uuid = key.split('.')[0];
-                    const name = file.name;
-                    const url = file.url;
+                    if (!!deleteEndpoint) {
+                        const key = file.url.split('/').pop();
+                        const uuid = key.split('.')[0];
+                        const name = file.name;
+                        const url = file.url;
 
-                    fetch(deleteEndpoint, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        },
-                        body: JSON.stringify({ name, url, uuid }),
-                    });
+                        fetch(deleteEndpoint, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            },
+                            body: JSON.stringify({ name, url, uuid }),
+                        });
+                    }
                 }
-            }
+            });
         },
 
         recalculateBusy() {
@@ -173,14 +181,16 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 // If there is a file that is not an error and is not fully uploaded, we consider the form to be processing.
                 if (!file.error && file.progress.bytesUploaded < file.progress.bytesTotal) {
                     uploadsInProgress = true;
+                    break;
                 }
             }
 
             if (uploadsInProgress) {
                 this.dispatchFormEvent('form-processing-started', {
-                    message: this.uploadingMessage,
+                    message: uploadingMessage,
                 });
             } else {
+                this.state = this.internalState;
                 this.dispatchFormEvent('form-processing-finished');
             }
         },
@@ -193,6 +203,18 @@ window.fileUploaderComponent = function fileUploaderComponent({
                     detail,
                 }),
             )
+        },
+
+        withFormProcessingAndBusy(cb) {
+            this.dispatchFormEvent('form-processing-started', {
+                message: uploadingMessage,
+            });
+            this.busy = true;
+
+            cb();
+
+            this.recalculateBusy();
+            this.toggleFormProcessingState();
         },
     }
 }
