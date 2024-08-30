@@ -195,7 +195,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
             }
         },
 
-        dispatchFormEvent: function (name, detail = {}) {
+        dispatchFormEvent(name, detail = {}) {
             this.$el.closest('form')?.dispatchEvent(
                 new CustomEvent(name, {
                     composed: true,
