@@ -74,7 +74,7 @@ window.fileUploaderComponent = function fileUploaderComponent({
                         this.state = this.internalState;
                     }
 
-                    if (!!successEndpoint) {
+                    if (successEndpoint) {
                         const key = response.uploadURL.split('/').pop();
                         const uuid = key.split('.')[0];
                         const name = file.name;
@@ -137,11 +137,11 @@ window.fileUploaderComponent = function fileUploaderComponent({
             this.withFormProcessingAndBusy(() => {
                 const file = this.internalState[index];
 
-                if (!!file) {
+                if (file) {
                     this.internalState.splice(index, 1);
                     this.state = this.internalState;
 
-                    if (!!deleteEndpoint) {
+                    if (deleteEndpoint) {
                         const key = file.url.split('/').pop();
                         const uuid = key.split('.')[0];
                         const name = file.name;
