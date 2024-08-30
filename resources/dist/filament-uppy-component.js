@@ -6067,30 +6067,33 @@ Uppy plugins must have unique \`id\` options.`;
         return this.dragDepth > 0;
       },
       removeFileInProgress(id11) {
-        this.uppy.removeFile(id11);
-        delete this.filesInProgress[id11];
-        this.recalculateBusy();
+        this.withFormProcessingAndBusy(() => {
+          this.uppy.removeFile(id11);
+          delete this.filesInProgress[id11];
+        });
       },
       removeCompletedFile(index) {
-        const file = this.internalState[index];
-        if (!!file) {
-          this.internalState.splice(index, 1);
-          this.state = this.internalState;
-          if (!!deleteEndpoint) {
-            const key = file.url.split("/").pop();
-            const uuid = key.split(".")[0];
-            const name = file.name;
-            const url = file.url;
-            fetch(deleteEndpoint, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-              },
-              body: JSON.stringify({ name, url, uuid })
-            });
+        this.withFormProcessingAndBusy(() => {
+          const file = this.internalState[index];
+          if (!!file) {
+            this.internalState.splice(index, 1);
+            this.state = this.internalState;
+            if (!!deleteEndpoint) {
+              const key = file.url.split("/").pop();
+              const uuid = key.split(".")[0];
+              const name = file.name;
+              const url = file.url;
+              fetch(deleteEndpoint, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ name, url, uuid })
+              });
+            }
           }
-        }
+        });
       },
       recalculateBusy() {
         for (const file of this.uppy.getFiles()) {
@@ -6129,6 +6132,15 @@ Uppy plugins must have unique \`id\` options.`;
             detail
           })
         );
+      },
+      withFormProcessingAndBusy(cb) {
+        this.dispatchFormEvent("form-processing-started", {
+          message: uploadingMessage
+        });
+        this.busy = true;
+        cb();
+        this.recalculateBusy();
+        this.toggleFormProcessingState();
       }
     };
   };
