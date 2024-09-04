@@ -741,9 +741,9 @@
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id2 = 0;
+  var id = 0;
   function _classPrivateFieldLooseKey(e2) {
-    return "__private_" + id2++ + "_" + e2;
+    return "__private_" + id++ + "_" + e2;
   }
   function insertReplacement(source, rx, replacement) {
     const newParts = [];
@@ -866,12 +866,12 @@
   // node_modules/nanoid/non-secure/index.js
   var urlAlphabet = "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";
   var nanoid = (size = 21) => {
-    let id12 = "";
+    let id11 = "";
     let i2 = size;
     while (i2--) {
-      id12 += urlAlphabet[Math.random() * 64 | 0];
+      id11 += urlAlphabet[Math.random() * 64 | 0];
     }
-    return id12;
+    return id11;
   };
 
   // node_modules/@uppy/core/lib/Uppy.js
@@ -882,9 +882,9 @@
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id3 = 0;
+  var id2 = 0;
   function _classPrivateFieldLooseKey2(e2) {
-    return "__private_" + id3++ + "_" + e2;
+    return "__private_" + id2++ + "_" + e2;
   }
   var packageJson = {
     "version": "4.0.0"
@@ -1028,23 +1028,23 @@
     }) + suffix;
   }
   function generateFileID(file, instanceId) {
-    let id12 = instanceId || "uppy";
+    let id11 = instanceId || "uppy";
     if (typeof file.name === "string") {
-      id12 += `-${encodeFilename(file.name.toLowerCase())}`;
+      id11 += `-${encodeFilename(file.name.toLowerCase())}`;
     }
     if (file.type !== void 0) {
-      id12 += `-${file.type}`;
+      id11 += `-${file.type}`;
     }
     if (file.meta && typeof file.meta.relativePath === "string") {
-      id12 += `-${encodeFilename(file.meta.relativePath.toLowerCase())}`;
+      id11 += `-${encodeFilename(file.meta.relativePath.toLowerCase())}`;
     }
     if (file.data.size !== void 0) {
-      id12 += `-${file.data.size}`;
+      id11 += `-${file.data.size}`;
     }
     if (file.data.lastModified !== void 0) {
-      id12 += `-${file.data.lastModified}`;
+      id11 += `-${file.data.lastModified}`;
     }
-    return id12;
+    return id11;
   }
   function hasFileStableId(file) {
     if (!file.isRemote || !file.remote) return false;
@@ -1348,9 +1348,9 @@
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id4 = 0;
+  var id3 = 0;
   function _classPrivateFieldLooseKey3(e2) {
-    return "__private_" + id4++ + "_" + e2;
+    return "__private_" + id3++ + "_" + e2;
   }
   var packageJson2 = {
     "version": "4.0.1"
@@ -1754,7 +1754,7 @@
       return Object.values(files);
     }
     getFilesByIds(ids) {
-      return ids.map((id12) => this.getFile(id12));
+      return ids.map((id11) => this.getFile(id11));
     }
     getObjectOfFilesPerState() {
       const {
@@ -2212,9 +2212,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     /**
      * Find one Plugin by name.
      */
-    getPlugin(id12) {
+    getPlugin(id11) {
       for (const plugins of Object.values(_classPrivateFieldLooseBase3(this, _plugins)[_plugins])) {
-        const foundPlugin = plugins.find((plugin) => plugin.id === id12);
+        const foundPlugin = plugins.find((plugin) => plugin.id === id11);
         if (foundPlugin != null) return foundPlugin;
       }
       return void 0;
@@ -2320,8 +2320,8 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           break;
       }
     }
-    registerRequestClient(id12, client) {
-      _classPrivateFieldLooseBase3(this, _requestClientById)[_requestClientById].set(id12, client);
+    registerRequestClient(id11, client) {
+      _classPrivateFieldLooseBase3(this, _requestClientById)[_requestClientById].set(id11, client);
     }
     /** @protected */
     getRequestClientForFile(file) {
@@ -2497,14 +2497,14 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     const fileType = getFileType(file);
     const fileName = getFileName(fileType, file);
     const fileExtension = getFileNameAndExtension(fileName).extension;
-    const id12 = getSafeFileId(file, this.getID());
+    const id11 = getSafeFileId(file, this.getID());
     const meta = file.meta || {};
     meta.name = fileName;
     meta.type = fileType;
     const size = Number.isFinite(file.data.size) ? file.data.size : null;
     return {
       source: file.source || "",
-      id: id12,
+      id: id11,
       name: fileName,
       extension: fileExtension || "",
       meta: {
@@ -3238,9 +3238,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id5 = 0;
+  var id4 = 0;
   function _classPrivateFieldLooseKey4(e2) {
-    return "__private_" + id5++ + "_" + e2;
+    return "__private_" + id4++ + "_" + e2;
   }
   function debounce(fn) {
     let calling = null;
@@ -3577,9 +3577,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id6 = 0;
+  var id5 = 0;
   function _classPrivateFieldLooseKey5(e2) {
-    return "__private_" + id6++ + "_" + e2;
+    return "__private_" + id5++ + "_" + e2;
   }
   var packageJson3 = {
     "version": "4.0.0"
@@ -4028,9 +4028,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id7 = 0;
+  var id6 = 0;
   function _classPrivateFieldLooseKey6(e2) {
-    return "__private_" + id7++ + "_" + e2;
+    return "__private_" + id6++ + "_" + e2;
   }
   var _uppy = /* @__PURE__ */ _classPrivateFieldLooseKey6("uppy");
   var _events = /* @__PURE__ */ _classPrivateFieldLooseKey6("events");
@@ -4113,9 +4113,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id8 = 0;
+  var id7 = 0;
   function _classPrivateFieldLooseKey7(e2) {
-    return "__private_" + id8++ + "_" + e2;
+    return "__private_" + id7++ + "_" + e2;
   }
   function createCancelError(cause) {
     return new Error("Cancelled", {
@@ -4464,9 +4464,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id9 = 0;
+  var id8 = 0;
   function _classPrivateFieldLooseKey8(e2) {
-    return "__private_" + id9++ + "_" + e2;
+    return "__private_" + id8++ + "_" + e2;
   }
   var MB = 1024 * 1024;
   var defaultOptions2 = {
@@ -4817,9 +4817,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id10 = 0;
+  var id9 = 0;
   function _classPrivateFieldLooseKey9(e2) {
-    return "__private_" + id10++ + "_" + e2;
+    return "__private_" + id9++ + "_" + e2;
   }
   function removeMetadataFromURL(urlString) {
     const urlObject = new URL(urlString);
@@ -5209,9 +5209,9 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     if (!{}.hasOwnProperty.call(e2, t2)) throw new TypeError("attempted to use private field on non-instance");
     return e2;
   }
-  var id11 = 0;
+  var id10 = 0;
   function _classPrivateFieldLooseKey10(e2) {
-    return "__private_" + id11++ + "_" + e2;
+    return "__private_" + id10++ + "_" + e2;
   }
   var packageJson4 = {
     "version": "4.0.1"
@@ -5999,8 +5999,8 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           });
         }).on("upload-progress", (file, progress) => this.filesInProgress[file.id].progress = (progress.bytesUploaded / progress.bytesTotal * 100).toFixed(0)).on("upload-success", (file, response) => {
           this.affectsBusyState(() => {
-            this.uppy.removeFile(id);
-            delete this.filesInProgress[id];
+            this.uppy.removeFile(file.id);
+            delete this.filesInProgress[file.id];
             if (!this.internalState.find((stateFile) => stateFile.id === file.id)) {
               this.internalState.push({
                 id: file.id,
@@ -6055,10 +6055,10 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       hovering() {
         return this.dragDepth > 0;
       },
-      removeFileInProgress(id12) {
+      removeFileInProgress(id11) {
         this.affectsBusyState(() => {
-          this.uppy.removeFile(id12);
-          delete this.filesInProgress[id12];
+          this.uppy.removeFile(id11);
+          delete this.filesInProgress[id11];
         });
       },
       removeCompletedFile(index) {

@@ -60,8 +60,8 @@ window.fileUploaderComponent = function fileUploaderComponent({
                 .on('upload-progress', (file, progress) => this.filesInProgress[file.id].progress = ((progress.bytesUploaded / progress.bytesTotal) * 100).toFixed(0))
                 .on('upload-success', (file, response) => {
                     this.affectsBusyState(() => {
-                        this.uppy.removeFile(id);
-                        delete this.filesInProgress[id];
+                        this.uppy.removeFile(file.id);
+                        delete this.filesInProgress[file.id];
 
                         // If state array does not contain a file with the same id, add it.
                         if (!this.internalState.find((stateFile) => stateFile.id === file.id)) {
