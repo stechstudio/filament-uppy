@@ -17,13 +17,15 @@ window.fileUploaderComponent = function fileUploaderComponent({
 }) {
     return {
         state,
-        internalState: [],
+        internalState: {},
+
+        nFiles: 0,
+        nProgress: 0,
+        nErrors: 0,
 
         busy: false,
 
         dragDepth: 0,
-
-        filesInProgress: {},
 
         uppy: new Uppy({
             autoProceed: true,
@@ -38,7 +40,16 @@ window.fileUploaderComponent = function fileUploaderComponent({
 
             // After initialization, we don't want Livewire updates to ever affect our
             // own state. The uploader is always the source of truth.
-            this.internalState = this.state;
+            for (const file of this.state) {
+                this.internalState[file.id] = {
+                    id: file.id,
+                    name: file.name,
+                    size: file.size,
+                    url: file.url,
+                };
+
+                this.nFiles = Object.keys(this.internalState).length;
+            }
 
             window.addEventListener('beforeunload', (e) => {
                 if (!this.busy) return;
@@ -49,29 +60,29 @@ window.fileUploaderComponent = function fileUploaderComponent({
             this.uppy
                 .on('file-added', (file) => {
                     this.affectsBusyState(() => {
-                        this.filesInProgress[file.id] = {
+                        this.internalState[file.id] = {
                             id: file.id,
                             name: file.name,
                             size: file.size,
                             progress: 0,
                         };
+
+                        ++this.nFiles;
+                        ++this.nProgress;
                     });
                 })
-                .on('upload-progress', (file, progress) => this.filesInProgress[file.id].progress = ((progress.bytesUploaded / progress.bytesTotal) * 100).toFixed(0))
+                .on('upload-progress', (file, progress) => this.internalState[file.id].progress = ((progress.bytesUploaded / progress.bytesTotal) * 100).toFixed(0))
                 .on('upload-success', (file, response) => {
                     this.affectsBusyState(() => {
                         this.uppy.removeFile(file.id);
-                        delete this.filesInProgress[file.id];
+                        this.internalState[file.id] = {
+                            id: file.id,
+                            name: file.name,
+                            size: file.size,
+                            url: response.uploadURL,
+                        };
 
-                        // If state array does not contain a file with the same id, add it.
-                        if (!this.internalState.find((stateFile) => stateFile.id === file.id)) {
-                            this.internalState.push({
-                                id: file.id,
-                                name: file.name,
-                                size: file.size,
-                                url: response.uploadURL,
-                            });
-                        }
+                        --this.nProgress;
                     });
 
                     if (successEndpoint) {
@@ -90,7 +101,11 @@ window.fileUploaderComponent = function fileUploaderComponent({
                     }
                 })
                 .on('upload-error', (file, error, response) => {
-                    this.affectsBusyState(() => this.filesInProgress[file.id].error = true);
+                    this.affectsBusyState(() => {
+                        this.internalState[file.id].error = true;
+
+                        ++this.nErrors;
+                    });
 
                     if (errorEndpoint) {
                         fetch(errorEndpoint, {
@@ -127,15 +142,27 @@ window.fileUploaderComponent = function fileUploaderComponent({
         removeFileInProgress(id) {
             this.affectsBusyState(() => {
                 this.uppy.removeFile(id);
-                delete this.filesInProgress[id];
+
+                const file = this.internalState[id];
+                delete this.internalState[id];
+
+                --this.nFiles;
+                --this.nProgress;
+                if (file.error) {
+                    --this.nErrors;
+                }
             });
         },
 
-        removeCompletedFile(index) {
-            const file = this.internalState[index];
+        removeCompletedFile(id) {
+            const file = this.internalState[id];
 
             if (file) {
-                this.affectsBusyState(() => this.internalState.splice(index, 1));
+                this.affectsBusyState(() => {
+                    delete this.internalState[id];
+
+                    --this.nFiles;
+                });
 
                 if (deleteEndpoint) {
                     const key = file.url.split('/').pop();
@@ -169,28 +196,31 @@ window.fileUploaderComponent = function fileUploaderComponent({
             )
         },
 
+        internalStateLength() {
+            return this.nFiles;
+        },
+
+        fileComplete(id) {
+            return this.internalState[id].progress === undefined;
+        },
+
         // A wrapper that properly handles events, busy state, and syncs internal state.
         affectsBusyState(cb) {
-            this.dispatchFormEvent('form-processing-started', {
-                message: uploadingMessage,
-            });
-            this.busy = true;
+            if (!this.busy) {
+                this.dispatchFormEvent('form-processing-started', {
+                    message: uploadingMessage,
+                });
+                this.busy = true;
+            }
 
             cb();
 
-            this.state = this.internalState;
-
-            let done = true;
-            for (const file of this.uppy.getFiles()) {
-                if (file.error || file.progress.bytesUploaded < file.progress.bytesTotal) {
-                    done = false;
-                    break;
-                }
-            }
-
+            const done = this.nErrors == 0 && this.nProgress == 0;
             this.busy = !done;
 
             if (done) {
+                this.state = Object.values(this.internalState)
+                    .filter(file => file.progress === undefined);
                 this.dispatchFormEvent('form-processing-finished');
             }
         },
