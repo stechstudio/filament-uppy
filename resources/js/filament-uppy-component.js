@@ -209,8 +209,11 @@ window.fileUploaderComponent = function fileUploaderComponent({
             });
         },
 
-        uploadProgress(uppyFile, progress) {
-            this.internalState.updateProgress(uppyFile, progress);
+        uploadProgress(uppyFile, _progress) {
+            // NOTE: despite what the Uppy documentation suggests, the
+            // `uppyFile.progress` object is not functionally equivalent to the
+            // `_progress` object (the latter lacks a `percentage` property)
+            this.internalState.updateProgress(uppyFile, uppyFile.progress);
         },
 
         uploadSuccess(uppyFile, response) {

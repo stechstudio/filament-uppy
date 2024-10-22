@@ -6120,8 +6120,8 @@ Uppy plugins must have unique \`id\` options.`;
           this.internalState.addInProgress(uppyFile);
         });
       },
-      uploadProgress(uppyFile, progress) {
-        this.internalState.updateProgress(uppyFile, progress);
+      uploadProgress(uppyFile, _progress) {
+        this.internalState.updateProgress(uppyFile, uppyFile.progress);
       },
       uploadSuccess(uppyFile, response) {
         this.affectsBusyState(() => {
