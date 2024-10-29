@@ -26,7 +26,7 @@
 
             x-bind:class="{
                 'ring-primary-500': dragDepth > 0,
-                'divide-y divide-gray-200 dark:divide-white/10': state.length + Object.keys(filesInProgress).length > 0,
+                'divide-y divide-gray-200 dark:divide-white/10': internalState.filled(),
             }"
 
             x-on:dragenter.prevent.stop="dragDepth++"
@@ -42,7 +42,7 @@
             })"
         >
             <table
-                x-show="state.length + Object.keys(filesInProgress).length > 0"
+                x-show="internalState.filled()"
                 class="w-full table-auto divide-y divide-gray-200 dark:divide-white/5"
             >
                 <thead>
@@ -74,7 +74,7 @@
                 </thead>
 
                 <tbody>
-                    <template x-for="(file, index) in state" :key="index">
+                    <template x-for="file in internalState.files" :key="file.id">
                         <tr>
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
                                 <span x-text="file.name"></span>
@@ -86,47 +86,33 @@
                             >
                                 <span
                                     x-show="!file.error"
-                                    x-text="humanReadableFilesize(file.size)"
+                                    x-text="file.humanSize"
                                 ></span>
                                 <span
-                                    x-show="!!file.error"
+                                    x-show="file.error"
                                     class="text-red-500"
                                 >Error</span>
                             </td>
 
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <span
-                                    class="font-semibold hover:underline cursor-pointer text-sm text-gray-700 dark:text-gray-200"
-                                    x-on:click="removeCompletedFile(index)"
+                                <div
+                                    class="flex gap-2 items-center"
+                                    x-bind:style="file.completed && {opacity: 0}"
                                 >
-                                    Remove
-                                </span>
-                            </td>
-                        </tr>
-                    </template>
-
-                    <template x-for="(file, index) in filesInProgress" :key="index">
-                        <tr>
-                            <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <span x-text="file.name"></span>
-                            </td>
-
-                            <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <span x-text="humanReadableFilesize(file.size)"></span>
-                            </td>
-
-                            <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <div class="flex gap-2 items-center">
                                     <div class="dark:bg-gray-900 bg-gray-100 rounded shadow-sm flex-grow" style="height: 6px">
                                         <div
-                                            class="bg-primary-500 h-full rounded-md transition-all"
-                                            x-bind:class="{'bg-primary-500' : !file.error, 'bg-red-500' : !!file.error}"
-                                            x-bind:style="'width: ' + file.progress + '%'"
+                                            class="bg-primary-500 h-full rounded-md"
+                                            x-bind:class="{
+                                                'bg-primary-500' : !file.error,
+                                                'bg-red-500' : file.error,
+                                                'transition-all' : internalState.length <= 2000,
+                                            }"
+                                            x-bind:style="'width: ' + file.percentage + '%'"
                                         ></div>
                                     </div>
 
                                     <div class="flex-shrink-0 tabular-nums">
-                                        <span x-text="file.progress + '%'"></span>
+                                        <span x-text="file.percentage + '%'"></span>
                                     </div>
                                 </div>
                             </td>
@@ -134,10 +120,9 @@
                             <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200">
                                 <span
                                     class="font-semibold hover:underline cursor-pointer text-sm text-gray-700 dark:text-gray-200"
-                                    x-on:click="removeFileInProgress(index)"
-                                >
-                                    Cancel
-                                </span>
+                                    x-on:click="removeFile(file.id)"
+                                    x-text="file.completed ? 'Remove' : 'Cancel'"
+                                ></span>
                             </td>
                         </tr>
                     </template>
@@ -145,7 +130,7 @@
             </table>
 
             <div
-                x-show="state.length + Object.keys(filesInProgress).length === 0"
+                x-show="internalState.empty()"
                 x-on:click="$refs.fileInput.click()"
                 class="align-middle cursor-pointer flex flex-col items-center px-3 py-2"
             >
@@ -167,7 +152,7 @@
             </div>
 
             <div
-                x-show="state.length + Object.keys(filesInProgress).length > 0"
+                x-show="internalState.filled()"
                 class="flex justify-center px-3 py-2"
             >
                 <button

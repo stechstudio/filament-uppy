@@ -887,7 +887,7 @@
     return "__private_" + id2++ + "_" + e2;
   }
   var packageJson = {
-    "version": "4.0.0"
+    "version": "4.1.0"
   };
   var _callbacks = /* @__PURE__ */ _classPrivateFieldLooseKey2("callbacks");
   var _publish = /* @__PURE__ */ _classPrivateFieldLooseKey2("publish");
@@ -1353,7 +1353,7 @@
     return "__private_" + id3++ + "_" + e2;
   }
   var packageJson2 = {
-    "version": "4.0.1"
+    "version": "4.1.2"
   };
   var defaultUploadState = {
     totalProgress: 0,
@@ -2194,7 +2194,7 @@
       const existsPluginAlready = this.getPlugin(pluginId);
       if (existsPluginAlready) {
         const msg = `Already found a plugin named '${existsPluginAlready.id}'. Tried to use: '${pluginId}'.
-Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#id.`;
+Uppy plugins must have unique \`id\` options.`;
         throw new Error(msg);
       }
       if (Plugin.VERSION) {
@@ -2956,12 +2956,12 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
   }
   function S(n2, l2, u2, t2, i2, o2, r2, f2, e2, c2, s2) {
     var a2, v2, y2, d2, w2, _2 = t2 && t2.__k || p, g2 = l2.length;
-    for (u2.__d = e2, $(u2, l2, _2), e2 = u2.__d, a2 = 0; a2 < g2; a2++) null != (y2 = u2.__k[a2]) && "boolean" != typeof y2 && "function" != typeof y2 && (v2 = -1 === y2.__i ? h : _2[y2.__i] || h, y2.__i = a2, O(n2, y2, v2, i2, o2, r2, f2, e2, c2, s2), d2 = y2.__e, y2.ref && v2.ref != y2.ref && (v2.ref && N(v2.ref, null, y2), s2.push(y2.ref, y2.__c || d2, y2)), null == w2 && null != d2 && (w2 = d2), 65536 & y2.__u || v2.__k === y2.__k ? (e2 && "string" == typeof y2.type && !n2.contains(e2) && (e2 = x(v2)), e2 = I(y2, e2, n2)) : "function" == typeof y2.type && void 0 !== y2.__d ? e2 = y2.__d : d2 && (e2 = d2.nextSibling), y2.__d = void 0, y2.__u &= -196609);
+    for (u2.__d = e2, $(u2, l2, _2), e2 = u2.__d, a2 = 0; a2 < g2; a2++) null != (y2 = u2.__k[a2]) && "boolean" != typeof y2 && "function" != typeof y2 && (v2 = -1 === y2.__i ? h : _2[y2.__i] || h, y2.__i = a2, O(n2, y2, v2, i2, o2, r2, f2, e2, c2, s2), d2 = y2.__e, y2.ref && v2.ref != y2.ref && (v2.ref && N(v2.ref, null, y2), s2.push(y2.ref, y2.__c || d2, y2)), null == w2 && null != d2 && (w2 = d2), 65536 & y2.__u || v2.__k === y2.__k ? e2 = I(y2, e2, n2) : "function" == typeof y2.type && void 0 !== y2.__d ? e2 = y2.__d : d2 && (e2 = d2.nextSibling), y2.__d = void 0, y2.__u &= -196609);
     u2.__d = e2, u2.__e = w2;
   }
   function $(n2, l2, u2) {
     var t2, i2, o2, r2, f2, e2 = l2.length, c2 = u2.length, s2 = c2, a2 = 0;
-    for (n2.__k = [], t2 = 0; t2 < e2; t2++) r2 = t2 + a2, null != (i2 = n2.__k[t2] = null == (i2 = l2[t2]) || "boolean" == typeof i2 || "function" == typeof i2 ? null : "string" == typeof i2 || "number" == typeof i2 || "bigint" == typeof i2 || i2.constructor == String ? g(null, i2, null, null, null) : y(i2) ? g(k, { children: i2 }, null, null, null) : void 0 === i2.constructor && i2.__b > 0 ? g(i2.type, i2.props, i2.key, i2.ref ? i2.ref : null, i2.__v) : i2) ? (i2.__ = n2, i2.__b = n2.__b + 1, f2 = L(i2, u2, r2, s2), i2.__i = f2, o2 = null, -1 !== f2 && (s2--, (o2 = u2[f2]) && (o2.__u |= 131072)), null == o2 || null === o2.__v ? (-1 == f2 && a2--, "function" != typeof i2.type && (i2.__u |= 65536)) : f2 !== r2 && (f2 == r2 - 1 ? a2 = f2 - r2 : f2 == r2 + 1 ? a2++ : f2 > r2 ? s2 > e2 - r2 ? a2 += f2 - r2 : a2-- : f2 < r2 && a2++, f2 !== t2 + a2 && (i2.__u |= 65536))) : (o2 = u2[r2]) && null == o2.key && o2.__e && 0 == (131072 & o2.__u) && (o2.__e == n2.__d && (n2.__d = x(o2)), V(o2, o2, false), u2[r2] = null, s2--);
+    for (n2.__k = [], t2 = 0; t2 < e2; t2++) r2 = t2 + a2, null != (i2 = n2.__k[t2] = null == (i2 = l2[t2]) || "boolean" == typeof i2 || "function" == typeof i2 ? null : "string" == typeof i2 || "number" == typeof i2 || "bigint" == typeof i2 || i2.constructor == String ? g(null, i2, null, null, null) : y(i2) ? g(k, { children: i2 }, null, null, null) : void 0 === i2.constructor && i2.__b > 0 ? g(i2.type, i2.props, i2.key, i2.ref ? i2.ref : null, i2.__v) : i2) ? (i2.__ = n2, i2.__b = n2.__b + 1, f2 = L(i2, u2, r2, s2), i2.__i = f2, o2 = null, -1 !== f2 && (s2--, (o2 = u2[f2]) && (o2.__u |= 131072)), null == o2 || null === o2.__v ? (-1 == f2 && a2--, "function" != typeof i2.type && (i2.__u |= 65536)) : f2 !== r2 && (f2 == r2 - 1 ? a2-- : f2 == r2 + 1 ? a2++ : f2 > r2 ? s2 > e2 - r2 ? a2 += f2 - r2 : a2-- : f2 < r2 && (f2 == r2 - a2 ? a2 -= f2 - r2 : a2++), f2 !== t2 + a2 && (i2.__u |= 65536))) : (o2 = u2[r2]) && null == o2.key && o2.__e && 0 == (131072 & o2.__u) && (o2.__e == n2.__d && (n2.__d = x(o2)), V(o2, o2, false), u2[r2] = null, s2--);
     if (s2) for (t2 = 0; t2 < c2; t2++) null != (o2 = u2[t2]) && 0 == (131072 & o2.__u) && (o2.__e == n2.__d && (n2.__d = x(o2)), V(o2, o2));
   }
   function I(n2, l2, u2) {
@@ -2970,7 +2970,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       for (t2 = n2.__k, i2 = 0; t2 && i2 < t2.length; i2++) t2[i2] && (t2[i2].__ = n2, l2 = I(t2[i2], l2, u2));
       return l2;
     }
-    n2.__e != l2 && (u2.insertBefore(n2.__e, l2 || null), l2 = n2.__e);
+    n2.__e != l2 && (l2 && n2.type && !u2.contains(l2) && (l2 = x(n2)), u2.insertBefore(n2.__e, l2 || null), l2 = n2.__e);
     do {
       l2 = l2 && l2.nextSibling;
     } while (null != l2 && 8 === l2.nodeType);
@@ -3048,7 +3048,11 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       } while (h2.__d && ++I2 < 25);
       h2.state = h2.__s, null != h2.getChildContext && (i2 = d(d({}, i2), h2.getChildContext())), x2 && !p2 && null != h2.getSnapshotBeforeUpdate && (_2 = h2.getSnapshotBeforeUpdate(v2, w2)), S(n2, y(L2 = null != a2 && a2.type === k && null == a2.key ? a2.props.children : a2) ? L2 : [L2], u2, t2, i2, o2, r2, f2, e2, c2, s2), h2.base = u2.__e, u2.__u &= -161, h2.__h.length && f2.push(h2), g2 && (h2.__E = h2.__ = null);
     } catch (n3) {
-      u2.__v = null, c2 || null != r2 ? (u2.__e = e2, u2.__u |= c2 ? 160 : 32, r2[r2.indexOf(e2)] = null) : (u2.__e = t2.__e, u2.__k = t2.__k), l.__e(n3, u2, t2);
+      if (u2.__v = null, c2 || null != r2) {
+        for (u2.__u |= c2 ? 160 : 32; e2 && 8 === e2.nodeType && e2.nextSibling; ) e2 = e2.nextSibling;
+        r2[r2.indexOf(e2)] = null, u2.__e = e2;
+      } else u2.__e = t2.__e, u2.__k = t2.__k;
+      l.__e(n3, u2, t2);
     }
     else null == r2 && u2.__v === t2.__v ? (u2.__k = t2.__k, u2.__e = t2.__e) : u2.__e = z(t2.__e, u2, t2, i2, o2, r2, f2, c2, s2);
     (a2 = l.diffed) && a2(u2);
@@ -3096,7 +3100,10 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
   }
   function N(n2, u2, t2) {
     try {
-      "function" == typeof n2 ? n2(u2) : n2.current = u2;
+      if ("function" == typeof n2) {
+        var i2 = "function" == typeof n2.__u;
+        i2 && n2.__u(), i2 && null == u2 || (n2.__u = n2(u2));
+      } else n2.current = u2;
     } catch (n3) {
       l.__e(n3, t2);
     }
@@ -3582,7 +3589,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     return "__private_" + id5++ + "_" + e2;
   }
   var packageJson3 = {
-    "version": "4.0.0"
+    "version": "4.0.1"
   };
   function stripSlash(url) {
     return url.replace(/\/$/, "");
@@ -5214,7 +5221,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
     return "__private_" + id10++ + "_" + e2;
   }
   var packageJson4 = {
-    "version": "4.0.1"
+    "version": "4.0.3"
   };
   function assertServerError(res) {
     if (res != null && res.error) {
@@ -5569,6 +5576,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       }).then(assertServerError);
     }
     getUploadParameters(file, options) {
+      _classPrivateFieldLooseBase10(this, _assertHost)[_assertHost]("getUploadParameters");
       const {
         meta
       } = file;
@@ -5866,7 +5874,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
 
   // node_modules/@uppy/file-input/lib/FileInput.js
   var packageJson5 = {
-    "version": "4.0.0"
+    "version": "4.0.1"
   };
   var defaultOptions4 = {
     pretty: true,
@@ -5911,6 +5919,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       this.input.click();
     }
     render() {
+      var _restrictions$allowed;
       const hiddenInputStyle = {
         width: "0.1px",
         height: "0.1px",
@@ -5922,7 +5931,6 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
       const {
         restrictions
       } = this.uppy.opts;
-      const accept = restrictions.allowedFileTypes ? restrictions.allowedFileTypes.join(",") : void 0;
       return _("div", {
         className: "uppy-FileInput-container"
       }, _("input", {
@@ -5932,7 +5940,7 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
         name: this.opts.inputName,
         onChange: this.handleInputChange,
         multiple: restrictions.maxNumberOfFiles !== 1,
-        accept,
+        accept: (_restrictions$allowed = restrictions.allowedFileTypes) == null ? void 0 : _restrictions$allowed.join(", "),
         ref: (input) => {
           this.input = input;
         }
@@ -5958,6 +5966,104 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
 
   // resources/js/filament-uppy-component.js
   var import_prettier_bytes2 = __toESM(require_prettierBytes());
+  var File2 = class {
+    constructor(uppyFile, url, completed) {
+      this.id = uppyFile.id;
+      this.name = uppyFile.name;
+      this.url = url;
+      this.completed = completed;
+      this.percentage = completed ? 100 : 0;
+      this.error = false;
+      this.size = uppyFile.size;
+      this.humanSize = (0, import_prettier_bytes2.default)(uppyFile.size);
+    }
+    toObject() {
+      return {
+        id: this.id,
+        name: this.name,
+        size: this.size,
+        url: this.url
+      };
+    }
+    updateProgress(progress) {
+      this.percentage = progress.percentage;
+      if (this.percentage == 100) {
+        this.completed = true;
+      }
+    }
+    updateUrl(response) {
+      this.url = response.uploadURL;
+    }
+    markCompleted() {
+      this.percentage = 100;
+      this.completed = true;
+    }
+    markErrored() {
+      this.error = true;
+    }
+  };
+  var InternalState = class {
+    constructor() {
+      this.files = {};
+      this.length = 0;
+      this.inProgress = 0;
+      this.errors = 0;
+    }
+    empty() {
+      return this.length == 0;
+    }
+    filled() {
+      return this.length > 0;
+    }
+    done() {
+      return this.errors == 0 && this.inProgress == 0;
+    }
+    get(id11) {
+      return this.files[id11];
+    }
+    addInProgress(uppyFile) {
+      ++this.inProgress;
+      ++this.length;
+      this.files[uppyFile.id] = new File2(uppyFile, "", false);
+    }
+    addComplete(object) {
+      ++this.length;
+      this.files[object.id] = new File2(object, object.url, true);
+    }
+    removeInProgress(file) {
+      --this.inProgress;
+      if (file.error) {
+        --this.errors;
+      }
+      --this.length;
+      delete this.files[file.id];
+    }
+    removeComplete(file) {
+      --this.length;
+      delete this.files[file.id];
+    }
+    markCompleted(uppyFile, response) {
+      --this.inProgress;
+      const file = this.files[uppyFile.id];
+      file.updateUrl(response);
+      file.markCompleted();
+    }
+    markErrored(uppyFile, _error, _response) {
+      ++this.errors;
+      this.files[uppyFile.id].markErrored();
+    }
+    updateProgress(uppyFile, progress) {
+      this.files[uppyFile.id].updateProgress(progress);
+    }
+    load(externalState) {
+      for (const object of externalState) {
+        this.addComplete(object);
+      }
+    }
+    export() {
+      return Object.values(this.files).filter((file) => file.completed).map((file) => file.toObject());
+    }
+  };
   window.fileUploaderComponent = function fileUploaderComponent({
     state,
     uploadEndpoint,
@@ -5969,77 +6075,34 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
   }) {
     return {
       state,
-      internalState: [],
-      busy: false,
-      dragDepth: 0,
-      filesInProgress: {},
+      internalState: new InternalState(),
       uppy: new Uppy_default({
         autoProceed: true,
         allowMultipleUploads: true,
         restrictions
       }),
+      busy: false,
+      dragDepth: 0,
       init() {
         if (!Array.isArray(this.state)) {
           this.state = [];
         }
-        this.internalState = this.state;
+        this.pullState();
         window.addEventListener("beforeunload", (e2) => {
           if (!this.busy) return;
           e2.preventDefault();
           e2.returnValue = "Are you sure you want to leave? Uploads in progress will be cancelled.";
         });
-        this.uppy.on("file-added", (file) => {
-          this.affectsBusyState(() => {
-            this.filesInProgress[file.id] = {
-              id: file.id,
-              name: file.name,
-              size: file.size,
-              progress: 0
-            };
-          });
-        }).on("upload-progress", (file, progress) => this.filesInProgress[file.id].progress = (progress.bytesUploaded / progress.bytesTotal * 100).toFixed(0)).on("upload-success", (file, response) => {
-          this.affectsBusyState(() => {
-            this.uppy.removeFile(file.id);
-            delete this.filesInProgress[file.id];
-            if (!this.internalState.find((stateFile) => stateFile.id === file.id)) {
-              this.internalState.push({
-                id: file.id,
-                name: file.name,
-                size: file.size,
-                url: response.uploadURL
-              });
-            }
-          });
-          if (successEndpoint) {
-            const key = response.uploadURL.split("/").pop();
-            const uuid = key.split(".")[0];
-            const name = file.name;
-            fetch(successEndpoint, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-              },
-              body: JSON.stringify({ key, uuid, name })
-            });
-          }
-        }).on("upload-error", (file, error, response) => {
-          this.affectsBusyState(() => this.filesInProgress[file.id].error = true);
-          if (errorEndpoint) {
-            fetch(errorEndpoint, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-              },
-              body: JSON.stringify({
-                name: file.name,
-                size: file.size,
-                error
-              })
-            });
-          }
-        });
+        this.initUppy();
+      },
+      pullState() {
+        this.internalState.load(this.state);
+      },
+      pushState() {
+        this.state = this.internalState.export();
+      },
+      initUppy() {
+        this.uppy.on("file-added", this.fileAdded.bind(this)).on("upload-progress", this.uploadProgress.bind(this)).on("upload-success", this.uploadSuccess.bind(this)).on("upload-error", this.uploadError.bind(this));
         this.uppy.use(AwsS3Multipart, {
           endpoint: uploadEndpoint,
           getChunkSize: (file) => 100 * 1024 * 1024,
@@ -6052,37 +6115,67 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           pretty: false
         });
       },
-      hovering() {
-        return this.dragDepth > 0;
-      },
-      removeFileInProgress(id11) {
+      fileAdded(uppyFile) {
         this.affectsBusyState(() => {
-          this.uppy.removeFile(id11);
-          delete this.filesInProgress[id11];
+          this.internalState.addInProgress(uppyFile);
         });
       },
-      removeCompletedFile(index) {
-        const file = this.internalState[index];
-        if (file) {
-          this.affectsBusyState(() => this.internalState.splice(index, 1));
-          if (deleteEndpoint) {
-            const key = file.url.split("/").pop();
-            const uuid = key.split(".")[0];
-            const name = file.name;
-            const url = file.url;
-            fetch(deleteEndpoint, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-              },
-              body: JSON.stringify({ name, url, uuid })
-            });
-          }
-        }
+      uploadProgress(uppyFile, _progress) {
+        this.internalState.updateProgress(uppyFile, uppyFile.progress);
       },
-      humanReadableFilesize(bytes) {
-        return (0, import_prettier_bytes2.default)(bytes);
+      uploadSuccess(uppyFile, response) {
+        this.affectsBusyState(() => {
+          this.uppy.removeFile(uppyFile.id);
+          this.internalState.markCompleted(uppyFile, response);
+        });
+        this.callSuccessEndpoint(uppyFile, response);
+      },
+      uploadError(uppyFile, error, response) {
+        this.affectsBusyState(() => {
+          this.internalState.markErrored(uppyFile, error, response);
+        });
+        this.callErrorEndpoint(uppyFile, error, response);
+      },
+      removeFile(id11) {
+        this.affectsBusyState(() => {
+          const file = this.internalState.get(id11);
+          if (!file) {
+            return;
+          }
+          if (file.completed) {
+            this.removeCompletedFile(file);
+          } else {
+            this.removeFileInProgress(file);
+          }
+        });
+      },
+      removeCompletedFile(file) {
+        this.affectsBusyState(() => {
+          this.internalState.removeComplete(file);
+        });
+        this.callDeleteEndpoint(file);
+      },
+      removeFileInProgress(file) {
+        this.affectsBusyState(() => {
+          this.uppy.removeFile(file.id);
+          this.internalState.removeInProgress(file);
+        });
+      },
+      // A wrapper that properly handles events, busy state, and syncs
+      // internal state.
+      affectsBusyState(cb) {
+        if (!this.busy) {
+          this.dispatchFormEvent("form-processing-started", {
+            message: uploadingMessage
+          });
+          this.busy = true;
+        }
+        cb();
+        if (this.internalState.done()) {
+          this.busy = false;
+          this.pushState();
+          this.dispatchFormEvent("form-processing-finished");
+        }
       },
       dispatchFormEvent(name, detail = {}) {
         this.$el.closest("form")?.dispatchEvent(
@@ -6093,24 +6186,55 @@ Uppy plugins must have unique \`id\` options. See https://uppy.io/docs/plugins/#
           })
         );
       },
-      // A wrapper that properly handles events, busy state, and syncs internal state.
-      affectsBusyState(cb) {
-        this.dispatchFormEvent("form-processing-started", {
-          message: uploadingMessage
-        });
-        this.busy = true;
-        cb();
-        this.state = this.internalState;
-        let done = true;
-        for (const file of this.uppy.getFiles()) {
-          if (file.error || file.progress.bytesUploaded < file.progress.bytesTotal) {
-            done = false;
-            break;
-          }
+      hovering() {
+        return this.dragDepth > 0;
+      },
+      callSuccessEndpoint(file, response) {
+        if (!successEndpoint) {
+          return;
         }
-        this.busy = !done;
-        if (done) {
-          this.dispatchFormEvent("form-processing-finished");
+        const key = response.uploadURL.split("/").pop();
+        const uuid = key.split(".")[0];
+        const name = file.name;
+        fetch(successEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({ key, uuid, name })
+        });
+      },
+      callErrorEndpoint(file, error, response) {
+        if (errorEndpoint) {
+          fetch(errorEndpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+              name: file.name,
+              size: file.size,
+              error
+            })
+          });
+        }
+      },
+      callDeleteEndpoint(file) {
+        if (deleteEndpoint) {
+          const key = file.url.split("/").pop();
+          const uuid = key.split(".")[0];
+          const name = file.name;
+          const url = file.url;
+          fetch(deleteEndpoint, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ name, url, uuid })
+          });
         }
       }
     };
