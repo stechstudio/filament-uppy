@@ -32,14 +32,7 @@
             x-on:dragenter.prevent.stop="dragDepth++"
             x-on:dragleave.prevent.stop="dragDepth--"
             x-on:dragover.prevent.stop=""
-            x-on:drop.prevent.stop="([...event.dataTransfer.files]).forEach((file) => {
-                uppy.addFile({
-                    name: file.name,
-                    type: file.type,
-                    data: file,
-                });
-                dragDepth = 0;
-            })"
+            x-on:drop.prevent.stop="handleDrop"
         >
             <table
                 x-show="internalState.filled()"

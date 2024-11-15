@@ -2,6 +2,7 @@ import Uppy from '@uppy/core';
 import AwsS3 from '@uppy/aws-s3';
 import FileInput from '@uppy/file-input';
 import prettierBytes from '@transloadit/prettier-bytes';
+import getDroppedFiles from '@uppy/utils/lib/getDroppedFiles';
 
 class File {
     constructor(uppyFile, url, completed) {
@@ -200,6 +201,29 @@ window.fileUploaderComponent = function fileUploaderComponent({
             this.uppy.use(FileInput, {
                 target: this.$refs.fileInput,
                 pretty: false,
+            });
+        },
+
+        // NOTE: this handler ensures that files can be added by dropping a
+        // folder of files rather than just files themselves.
+        handleDrop(event) {
+            getDroppedFiles(event.dataTransfer, {
+                logDropError: (error) => this.uppy.log(error, 'error'),
+            }).then((files) => {
+                const descriptors = files.map((file) => ({
+                    name: file.name,
+                    type: file.type,
+                    data: file,
+                    meta: {
+                        relativePath: file.relativePath || null,
+                    },
+                }));
+
+                try {
+                    this.uppy.addFiles(descriptors);
+                } catch (error) {
+                    this.uppy.log(error);
+                }
             });
         },
 

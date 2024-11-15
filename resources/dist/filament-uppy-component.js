@@ -5966,6 +5966,133 @@ Uppy plugins must have unique \`id\` options.`;
 
   // resources/js/filament-uppy-component.js
   var import_prettier_bytes2 = __toESM(require_prettierBytes());
+
+  // node_modules/@uppy/utils/lib/getDroppedFiles/utils/webkitGetAsEntryApi/getFilesAndDirectoriesFromDirectory.js
+  function getFilesAndDirectoriesFromDirectory(directoryReader, oldEntries, logDropError, _ref) {
+    let {
+      onSuccess
+    } = _ref;
+    directoryReader.readEntries(
+      (entries) => {
+        const newEntries = [...oldEntries, ...entries];
+        if (entries.length) {
+          queueMicrotask(() => {
+            getFilesAndDirectoriesFromDirectory(directoryReader, newEntries, logDropError, {
+              onSuccess
+            });
+          });
+        } else {
+          onSuccess(newEntries);
+        }
+      },
+      // Make sure we resolve on error anyway, it's fine if only one directory couldn't be parsed!
+      (error) => {
+        logDropError(error);
+        onSuccess(oldEntries);
+      }
+    );
+  }
+
+  // node_modules/@uppy/utils/lib/getDroppedFiles/utils/webkitGetAsEntryApi/index.js
+  function getAsFileSystemHandleFromEntry(entry, logDropError) {
+    if (entry == null) return entry;
+    return {
+      kind: (
+        // eslint-disable-next-line no-nested-ternary
+        entry.isFile ? "file" : entry.isDirectory ? "directory" : void 0
+      ),
+      name: entry.name,
+      getFile() {
+        return new Promise((resolve, reject) => entry.file(resolve, reject));
+      },
+      async *values() {
+        const directoryReader = entry.createReader();
+        const entries = await new Promise((resolve) => {
+          getFilesAndDirectoriesFromDirectory(directoryReader, [], logDropError, {
+            onSuccess: (dirEntries) => resolve(dirEntries.map((file) => getAsFileSystemHandleFromEntry(file, logDropError)))
+          });
+        });
+        yield* entries;
+      },
+      isSameEntry: void 0
+    };
+  }
+  function createPromiseToAddFileOrParseDirectory(entry, relativePath, lastResortFile) {
+    try {
+      if (lastResortFile === void 0) {
+        lastResortFile = void 0;
+      }
+      return async function* () {
+        const getNextRelativePath = () => `${relativePath}/${entry.name}`;
+        if (entry.kind === "file") {
+          const file = await entry.getFile();
+          if (file != null) {
+            ;
+            file.relativePath = relativePath ? getNextRelativePath() : null;
+            yield file;
+          } else if (lastResortFile != null) yield lastResortFile;
+        } else if (entry.kind === "directory") {
+          for await (const handle of entry.values()) {
+            yield* createPromiseToAddFileOrParseDirectory(handle, relativePath ? getNextRelativePath() : entry.name);
+          }
+        } else if (lastResortFile != null) yield lastResortFile;
+      }();
+    } catch (e2) {
+      return Promise.reject(e2);
+    }
+  }
+  async function* getFilesFromDataTransfer(dataTransfer, logDropError) {
+    const fileSystemHandles = await Promise.all(Array.from(dataTransfer.items, async (item) => {
+      var _fileSystemHandle;
+      let fileSystemHandle;
+      const getAsEntry = () => typeof item.getAsEntry === "function" ? item.getAsEntry() : item.webkitGetAsEntry();
+      (_fileSystemHandle = fileSystemHandle) != null ? _fileSystemHandle : fileSystemHandle = getAsFileSystemHandleFromEntry(getAsEntry(), logDropError);
+      return {
+        fileSystemHandle,
+        lastResortFile: item.getAsFile()
+        // can be used as a fallback in case other methods fail
+      };
+    }));
+    for (const {
+      lastResortFile,
+      fileSystemHandle
+    } of fileSystemHandles) {
+      if (fileSystemHandle != null) {
+        try {
+          yield* createPromiseToAddFileOrParseDirectory(fileSystemHandle, "", lastResortFile);
+        } catch (err) {
+          if (lastResortFile != null) {
+            yield lastResortFile;
+          } else {
+            logDropError(err);
+          }
+        }
+      } else if (lastResortFile != null) yield lastResortFile;
+    }
+  }
+
+  // node_modules/@uppy/utils/lib/getDroppedFiles/utils/fallbackApi.js
+  function fallbackApi(dataTransfer) {
+    const files = toArray_default(dataTransfer.files);
+    return Promise.resolve(files);
+  }
+
+  // node_modules/@uppy/utils/lib/getDroppedFiles/index.js
+  async function getDroppedFiles(dataTransfer, options) {
+    var _options$logDropError;
+    const logDropError = (_options$logDropError = options == null ? void 0 : options.logDropError) != null ? _options$logDropError : Function.prototype;
+    try {
+      const accumulator = [];
+      for await (const file of getFilesFromDataTransfer(dataTransfer, logDropError)) {
+        accumulator.push(file);
+      }
+      return accumulator;
+    } catch {
+      return fallbackApi(dataTransfer);
+    }
+  }
+
+  // resources/js/filament-uppy-component.js
   var File2 = class {
     constructor(uppyFile, url, completed) {
       this.id = uppyFile.id;
@@ -6113,6 +6240,27 @@ Uppy plugins must have unique \`id\` options.`;
         this.uppy.use(FileInput, {
           target: this.$refs.fileInput,
           pretty: false
+        });
+      },
+      // NOTE: this handler ensures that files can be added by dropping a
+      // folder of files rather than just files themselves.
+      handleDrop(event) {
+        getDroppedFiles(event.dataTransfer, {
+          logDropError: (error) => this.uppy.log(error, "error")
+        }).then((files) => {
+          const descriptors = files.map((file) => ({
+            name: file.name,
+            type: file.type,
+            data: file,
+            meta: {
+              relativePath: file.relativePath || null
+            }
+          }));
+          try {
+            this.uppy.addFiles(descriptors);
+          } catch (error) {
+            this.uppy.log(error);
+          }
         });
       },
       fileAdded(uppyFile) {
