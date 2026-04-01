@@ -11,6 +11,8 @@ This package contains a [Filament](https://filamentphp.com/) form component call
 |-----|---------|----------|
 | 8.3+ | 11, 12, 13 | 3, 4, 5 |
 
+This package's major version tracks [laravel-uppy-companion](https://github.com/stechstudio/laravel-uppy-companion) (e.g. filament-uppy v0.6.x requires companion ^0.6). While in 0.x, the second digit is the major version.
+
 ## Installation
 At this point, using this component still requires
 [configuring the Laravel Uppy Companion](https://github.com/stechstudio/laravel-uppy-companion/blob/master/README.md#service-provider-configuration)
