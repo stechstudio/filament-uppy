@@ -1,6 +1,17 @@
 # Filament Uppy Form Component
+
+![Tests](https://github.com/stechstudio/filament-uppy/actions/workflows/tests.yml/badge.svg)
+
 This package contains a [Filament](https://filamentphp.com/) form component called `UppyUploader` that integrates the
 [Uppy JS uploader](https://uppy.io) with our own [Laravel Uppy Companion](https://github.com/stechstudio/laravel-uppy-companion).
+
+## Compatibility
+
+| PHP | Laravel | Filament |
+|-----|---------|----------|
+| 8.3+ | 11, 12, 13 | 3, 4, 5 |
+
+This package's major version tracks [laravel-uppy-companion](https://github.com/stechstudio/laravel-uppy-companion) (e.g. filament-uppy v0.6.x requires companion ^0.6). While in 0.x, the second digit is the major version.
 
 ## Installation
 At this point, using this component still requires
